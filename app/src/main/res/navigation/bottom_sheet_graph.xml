@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bottom_sheet_graph"
+    app:startDestination="@id/searchLinkBSFragment">
+
+    <fragment
+        android:id="@+id/searchLinkBSFragment"
+        android:name="com.example.whereiscaesarv2.presentation.ui.fragments.SearchLinkBSFragment"
+        android:label="fragment_search_link_b_s"
+        tools:layout="@layout/fragment_search_link_b_s" >
+        <action
+            android:id="@+id/action_searchLinkBSFragment_to_searchBSFragment"
+            app:destination="@id/searchBSFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/searchBSFragment"
+        android:name="com.example.whereiscaesarv2.presentation.ui.fragments.SearchBSFragment"
+        android:label="fragment_search_b_s"
+        tools:layout="@layout/fragment_search_b_s" />
+</navigation>
