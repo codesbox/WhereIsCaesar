@@ -2,27 +2,21 @@ package com.example.whereiscaesarv2.presentation.ui.fragments;
 
 import static com.example.whereiscaesarv2.presentation.app.App.isMapKitSetApiKey;
 import static com.example.whereiscaesarv2.presentation.app.App.mapContext;
-
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentContainerView;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.navigation.Navigation;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
-
 import com.example.whereiscaesarv2.R;
 import com.example.whereiscaesarv2.databinding.FragmentMainMapBinding;
-import com.example.whereiscaesarv2.presentation.viewModels.MainMapFragmentViewModel;
-import com.example.whereiscaesarv2.presentation.viewModels.MainMapFragmentViewModelFactory;
-import com.example.whereiscaesarv2.presentation.viewModels.MapSharedViewModel;
+import com.example.whereiscaesarv2.presentation.viewModels.viewmodels.MainMapFragmentViewModel;
+import com.example.whereiscaesarv2.presentation.viewModels.viewmodels.MainMapFragmentViewModelFactory;
+import com.example.whereiscaesarv2.presentation.viewModels.sharedViewModels.MapSharedViewModel;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.yandex.mapkit.Animation;
 import com.yandex.mapkit.MapKitFactory;
@@ -33,7 +27,7 @@ import com.yandex.mapkit.mapview.MapView;
 
 public class MainMapFragment extends Fragment {
 
-    private MainMapFragmentViewModel viewModel;
+    MainMapFragmentViewModel viewModel;
     public BottomSheetBehavior<FragmentContainerView> bottomSheetBehavior;
 
     private MapView mapView;
@@ -43,7 +37,7 @@ public class MainMapFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         if (!isMapKitSetApiKey){
@@ -64,7 +58,7 @@ public class MainMapFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         FragmentMainMapBinding binding = FragmentMainMapBinding.bind(view);
         mapView = binding.mapView;
-        MapSharedViewModel mapSharedViewModel = new ViewModelProvider((ViewModelStoreOwner) requireActivity(), (ViewModelProvider.Factory) ViewModelProvider.AndroidViewModelFactory.getInstance(getActivity().getApplication())).get(MapSharedViewModel.class);
+        MapSharedViewModel mapSharedViewModel = new ViewModelProvider(requireActivity(), (ViewModelProvider.Factory) ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().getApplication())).get(MapSharedViewModel.class);
 
 
         viewModel = new ViewModelProvider(this, new MainMapFragmentViewModelFactory()).get(MainMapFragmentViewModel.class);
@@ -75,28 +69,26 @@ public class MainMapFragment extends Fragment {
                 new Animation(Animation.Type.SMOOTH, 1),
                 null);
         mapContext = requireContext();
-        binding.floatingActionButton.setOnClickListener(v -> {
-
-            Navigation.findNavController(requireActivity(), R.id.mainFragmentContainerView).navigate(R.id.action_mainMapFragment_to_searchLinkBSFragment2);
-
-
-        });
 
 
 
 
         bottomSheetBehavior = BottomSheetBehavior.from(binding.containerBottomSheet);
+        bottomSheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+
+            }
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+                if (slideOffset == 0.0) {
+                    Navigation.findNavController(bottomSheet).popBackStack(R.id.searchLinkBSFragment, false);
+
+
+                }
+            }
+        });
         mapSharedViewModel.setBehaviorMutableLiveData(bottomSheetBehavior);
-        //SearchBSFragment bottomFragment = new SearchBSFragment();
-
-        //Navigation.findNavController(requireActivity(), R.id.containerBottomSheet).navigate(R.id.testBottomSheet);
-        //requireActivity().getSupportFragmentManager().beginTransaction()
-        //        .replace(R.id.containerBottomSheet, bottomFragment)
-        //        .commit();
-
-
-        //bottomSheetBehavior.setPeekHeight(350);
-        //bottomSheetBehavior.setDraggable(false);
     }
 
     @Override

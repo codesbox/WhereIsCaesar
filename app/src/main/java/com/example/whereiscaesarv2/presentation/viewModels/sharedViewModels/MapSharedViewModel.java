@@ -1,4 +1,4 @@
-package com.example.whereiscaesarv2.presentation.viewModels;
+package com.example.whereiscaesarv2.presentation.viewModels.sharedViewModels;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

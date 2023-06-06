@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "663935587763",
+    "project_id": "whereiscaesar-482be",
+    "storage_bucket": "whereiscaesar-482be.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:663935587763:android:d2fc1e45022f495e0867c6",
+        "android_client_info": {
+          "package_name": "com.example.whereiscaesarv2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "663935587763-i6raqc13qo3osv8jr9ghcoq4f4u2rg1k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBK6AvfPAaqQQ7mwu_BbKKpy6Rn1ct_ACU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "663935587763-i6raqc13qo3osv8jr9ghcoq4f4u2rg1k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

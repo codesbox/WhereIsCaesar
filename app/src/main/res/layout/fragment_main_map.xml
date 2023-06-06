@@ -10,19 +10,7 @@
     <com.yandex.mapkit.mapview.MapView
         android:id="@+id/mapView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/floatingActionButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="31dp"
-            android:layout_marginEnd="30dp"
-            android:clickable="true"
-            android:src="@drawable/account_icon" />
-    </com.yandex.mapkit.mapview.MapView>
+        android:layout_height="match_parent"/>
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -36,7 +24,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:behavior_hideable="true"
-            app:behavior_peekHeight="300dp"
             app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

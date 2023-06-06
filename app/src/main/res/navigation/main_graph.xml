@@ -11,12 +11,12 @@
         android:label="fragment_main_map"
         tools:layout="@layout/fragment_main_map" >
         <action
-            android:id="@+id/action_mainMapFragment_to_searchLinkBSFragment2"
-            app:destination="@id/searchLinkBSFragment2" />
+            android:id="@+id/action_mainMapFragment_to_categoryBSFragment"
+            app:destination="@id/categoryBSFragment" />
     </fragment>
     <fragment
-        android:id="@+id/searchLinkBSFragment2"
-        android:name="com.example.whereiscaesarv2.presentation.ui.fragments.SearchLinkBSFragment"
-        android:label="fragment_search_link_b_s"
-        tools:layout="@layout/fragment_search_link_b_s" />
+        android:id="@+id/categoryBSFragment"
+        android:name="com.example.whereiscaesarv2.presentation.ui.fragments.CategoryBSFragment"
+        android:label="fragment_category_b_s"
+        tools:layout="@layout/fragment_category_b_s" />
 </navigation>
