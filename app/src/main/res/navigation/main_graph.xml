@@ -13,10 +13,27 @@
         <action
             android:id="@+id/action_mainMapFragment_to_categoryBSFragment"
             app:destination="@id/categoryBSFragment" />
+        <action
+            android:id="@+id/action_mainMapFragment_to_signInFragment"
+            app:destination="@id/signInFragment" />
     </fragment>
     <fragment
         android:id="@+id/categoryBSFragment"
-        android:name="com.example.whereiscaesarv2.presentation.ui.fragments.CategoryBSFragment"
+        android:name="com.example.whereiscaesarv2.presentation.ui.fragments.search.CategoryBSFragment"
         android:label="fragment_category_b_s"
         tools:layout="@layout/fragment_category_b_s" />
+    <fragment
+        android:id="@+id/signInFragment"
+        android:name="com.example.whereiscaesarv2.presentation.ui.fragments.account.SignInFragment"
+        android:label="fragment_sign_in"
+        tools:layout="@layout/fragment_sign_in" >
+        <action
+            android:id="@+id/action_signInFragment_to_signUpFragment2"
+            app:destination="@id/signUpFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/signUpFragment2"
+        android:name="com.example.whereiscaesarv2.presentation.ui.fragments.account.SignUpFragment"
+        android:label="fragment_sign_up"
+        tools:layout="@layout/fragment_sign_up" />
 </navigation>

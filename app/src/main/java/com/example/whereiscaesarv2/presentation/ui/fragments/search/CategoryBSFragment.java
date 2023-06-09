@@ -1,4 +1,4 @@
-package com.example.whereiscaesarv2.presentation.ui.fragments;
+package com.example.whereiscaesarv2.presentation.ui.fragments.search;
 
 import android.os.Bundle;
 
@@ -98,13 +98,10 @@ public class CategoryBSFragment extends Fragment {
             }
         };
 
-
         adapter = new SearchAdapter(getContext(), listener);
         RecyclerView recyclerView = binding.recyclerview;
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-
 
     }
 }

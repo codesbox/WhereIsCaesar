@@ -7,16 +7,20 @@
 
     <fragment
         android:id="@+id/searchLinkBSFragment"
-        android:name="com.example.whereiscaesarv2.presentation.ui.fragments.SearchLinkBSFragment"
+        android:name="com.example.whereiscaesarv2.presentation.ui.fragments.search.SearchLinkBSFragment"
         android:label="fragment_search_link_b_s"
         tools:layout="@layout/fragment_search_link_b_s" >
         <action
             android:id="@+id/action_searchLinkBSFragment_to_searchBSFragment"
             app:destination="@id/searchBSFragment" />
+        <action
+            android:id="@+id/action_searchLinkBSFragment_to_account_graph"
+            app:destination="@id/account_graph" />
     </fragment>
     <fragment
         android:id="@+id/searchBSFragment"
-        android:name="com.example.whereiscaesarv2.presentation.ui.fragments.SearchBSFragment"
+        android:name="com.example.whereiscaesarv2.presentation.ui.fragments.search.SearchBSFragment"
         android:label="fragment_search_b_s"
         tools:layout="@layout/fragment_search_b_s" />
+    <include app:graph="@navigation/account_graph" />
 </navigation>

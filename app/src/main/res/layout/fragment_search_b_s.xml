@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/bottom_sheet_bg"
     android:orientation="vertical"
-    tools:context=".presentation.ui.fragments.SearchBSFragment">
+    tools:context=".presentation.ui.fragments.search.SearchBSFragment">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout

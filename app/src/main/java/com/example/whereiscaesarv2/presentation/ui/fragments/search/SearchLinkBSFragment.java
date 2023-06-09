@@ -1,4 +1,4 @@
-package com.example.whereiscaesarv2.presentation.ui.fragments;
+package com.example.whereiscaesarv2.presentation.ui.fragments.search;
 
 
 import android.os.Bundle;
@@ -42,6 +42,14 @@ public class SearchLinkBSFragment extends Fragment {
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
             });
             NavHostFragment.findNavController(this).navigate(R.id.action_searchLinkBSFragment_to_searchBSFragment);
+        });
+
+        binding.floatingActionButton2.setOnClickListener(v -> {
+            mapSharedViewModel.getBottomSheetBehavior().observe(getViewLifecycleOwner(), bottomSheetBehavior -> {
+                bottomSheetBehavior.setDraggable(true);
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+            });
+            NavHostFragment.findNavController(this).navigate(R.id.action_searchLinkBSFragment_to_account_graph);
         });
     }
 }

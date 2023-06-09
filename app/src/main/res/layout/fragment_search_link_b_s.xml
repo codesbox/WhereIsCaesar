@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.ui.fragments.SearchLinkBSFragment"
+    tools:context=".presentation.ui.fragments.search.SearchLinkBSFragment"
     android:background="@android:color/transparent">
 
     <androidx.cardview.widget.CardView

@@ -1,4 +1,4 @@
-package com.example.whereiscaesarv2.presentation.ui.fragments;
+package com.example.whereiscaesarv2.presentation.ui.fragments.search;
 
 import android.os.Bundle;
 import androidx.annotation.NonNull;

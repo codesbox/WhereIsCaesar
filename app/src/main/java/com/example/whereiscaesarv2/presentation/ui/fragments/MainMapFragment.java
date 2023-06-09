@@ -70,9 +70,6 @@ public class MainMapFragment extends Fragment {
                 null);
         mapContext = requireContext();
 
-
-
-
         bottomSheetBehavior = BottomSheetBehavior.from(binding.containerBottomSheet);
         bottomSheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
@@ -83,8 +80,6 @@ public class MainMapFragment extends Fragment {
             public void onSlide(@NonNull View bottomSheet, float slideOffset) {
                 if (slideOffset == 0.0) {
                     Navigation.findNavController(bottomSheet).popBackStack(R.id.searchLinkBSFragment, false);
-
-
                 }
             }
         });
