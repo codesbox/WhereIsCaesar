@@ -17,13 +17,14 @@ public class MainMapFragmentViewModel extends ViewModel {
 
     MutableLiveData<List<RestaurantModelDomain>> allRestaurantsList;
 
-    MutableLiveData<List<RestaurantModelDomain>> restaurantsList = new MutableLiveData<>();
+    MutableLiveData<List<String>> selectedDishes = new MutableLiveData<>();
 
     GetRestaurantsUseCase getRestaurantsUseCase;
 
     public MainMapFragmentViewModel(MutableLiveData<List<RestaurantModelDomain>> allRestaurantsList, GetRestaurantsUseCase getRestaurantsUseCase){
         this.allRestaurantsList = allRestaurantsList;
         this.getRestaurantsUseCase = getRestaurantsUseCase;
+        setSelectedDishes(new ArrayList<>());
     }
 
     public LiveData<List<RestaurantModelDomain>> getRestaurants(){
@@ -32,6 +33,14 @@ public class MainMapFragmentViewModel extends ViewModel {
 
     public void updateRestaurantsList(List<String> dishList, PointModel topLeftPoint, PointModel bottomRightPoint){
         getRestaurantsUseCase.execute(dishList, topLeftPoint, bottomRightPoint);
+    }
+
+    public void setSelectedDishes(List<String> selectedDishes){
+        this.selectedDishes.setValue(selectedDishes);
+    }
+
+    public LiveData<List<String>> getSelectedDishes(){
+        return selectedDishes;
     }
 
 

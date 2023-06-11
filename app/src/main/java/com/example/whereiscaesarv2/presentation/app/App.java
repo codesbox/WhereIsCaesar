@@ -7,5 +7,6 @@ public class App extends Application {
 
     public static boolean isMapKitSetApiKey = false;
     public static Context mapContext = null;
+    public static boolean isAuto = false;
 
 }

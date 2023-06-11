@@ -2,6 +2,8 @@ package com.example.whereiscaesarv2.presentation.ui.fragments.account;
 
 import static android.content.ContentValues.TAG;
 
+import static com.example.whereiscaesarv2.presentation.app.App.isAuto;
+
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;

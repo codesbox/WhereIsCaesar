@@ -21,6 +21,14 @@
         android:id="@+id/searchBSFragment"
         android:name="com.example.whereiscaesarv2.presentation.ui.fragments.search.SearchBSFragment"
         android:label="fragment_search_b_s"
-        tools:layout="@layout/fragment_search_b_s" />
+        tools:layout="@layout/fragment_search_b_s" >
+        <action
+            android:id="@+id/action_searchBSFragment_to_restaurantsListFragment"
+            app:destination="@id/restaurantsListFragment" />
+    </fragment>
     <include app:graph="@navigation/account_graph" />
+    <fragment
+        android:id="@+id/restaurantsListFragment"
+        android:name="com.example.whereiscaesarv2.presentation.ui.fragments.RestaurantsListFragment"
+        android:label="RestaurantsListFragment" />
 </navigation>

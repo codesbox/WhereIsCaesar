@@ -1,5 +1,7 @@
 package com.example.whereiscaesarv2.presentation.ui.fragments.account;
 
+import static com.example.whereiscaesarv2.presentation.app.App.isAuto;
+
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -34,6 +36,7 @@ public class SignUpFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        isAuto = false;
         FragmentSignUpBinding binding = FragmentSignUpBinding.bind(view);
 
         vm = new ViewModelProvider(this, new SignUpViewModelFactory()).get(SignUpViewModel.class);

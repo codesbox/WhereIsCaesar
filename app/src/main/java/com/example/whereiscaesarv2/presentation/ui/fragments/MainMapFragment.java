@@ -1,5 +1,6 @@
 package com.example.whereiscaesarv2.presentation.ui.fragments;
 
+import static com.example.whereiscaesarv2.presentation.app.App.isAuto;
 import static com.example.whereiscaesarv2.presentation.app.App.isMapKitSetApiKey;
 import static com.example.whereiscaesarv2.presentation.app.App.mapContext;
 import android.os.Bundle;
@@ -28,7 +29,6 @@ import com.example.whereiscaesarv2.databinding.FragmentMainMapBinding;
 import com.example.whereiscaesarv2.presentation.util.listeners.CameraListenerImpl;
 import com.example.whereiscaesarv2.presentation.viewModels.viewmodels.MainMapFragmentViewModel;
 import com.example.whereiscaesarv2.presentation.viewModels.viewmodels.MainMapFragmentViewModelFactory;
-import com.example.whereiscaesarv2.presentation.viewModels.sharedViewModels.MapSharedViewModel;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.yandex.mapkit.Animation;
 import com.yandex.mapkit.MapKitFactory;
@@ -48,7 +48,7 @@ import java.util.List;
 public class MainMapFragment extends Fragment {
 
     MainMapFragmentViewModel viewModel;
-    public BottomSheetBehavior<FragmentContainerView> bottomSheetBehavior;
+    public static BottomSheetBehavior<FragmentContainerView> bottomSheetBehavior;
 
     List<PlacemarkMapObject> markers = new ArrayList<>();
 
@@ -78,6 +78,7 @@ public class MainMapFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        isAuto = false;
         FragmentMainMapBinding binding = FragmentMainMapBinding.bind(view);
 
         ImageProvider imageProvider = ImageProvider.fromResource(
@@ -86,10 +87,10 @@ public class MainMapFragment extends Fragment {
         );
 
         mapView = binding.mapView;
-        MapSharedViewModel mapSharedViewModel = new ViewModelProvider(requireActivity(), (ViewModelProvider.Factory) ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().getApplication())).get(MapSharedViewModel.class);
 
 
-        viewModel = new ViewModelProvider(this, new MainMapFragmentViewModelFactory()).get(MainMapFragmentViewModel.class);
+
+        viewModel = new ViewModelProvider(requireActivity(), new MainMapFragmentViewModelFactory()).get(MainMapFragmentViewModel.class);
 
 
         mapView.getMap().move(
@@ -108,24 +109,30 @@ public class MainMapFragment extends Fragment {
             }
             @Override
             public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-                if (slideOffset == 0.0) {
-                    Navigation.findNavController(bottomSheet).popBackStack(R.id.searchLinkBSFragment, false);
+                Log.d("CCCCCCCCC", String.valueOf(slideOffset));
+                Log.d("QQQQQQQQ", String.valueOf(bottomSheetBehavior.getPeekHeight()));
+                if (bottomSheetBehavior.getPeekHeight() == 0){
+                    if (slideOffset == 0.0 && !isAuto) {
+
+                        Navigation.findNavController(bottomSheet).popBackStack(R.id.searchLinkBSFragment, false);
+                    }
                 }
+                else{
+                    if (slideOffset == -1.0 && !isAuto){
+                        Navigation.findNavController(bottomSheet).popBackStack(R.id.searchLinkBSFragment, false);
+                    }
+                }
+
             }
         });
-        mapSharedViewModel.setBehaviorMutableLiveData(bottomSheetBehavior);
 
-        Point topLeft = mapView.getMap().getVisibleRegion().getTopLeft();
-        Point bottomRight = mapView.getMap().getVisibleRegion().getBottomRight();
-        List<String> test = new ArrayList<>();
-        //test.add("Салат цезарь");
 
-        viewModel.updateRestaurantsList(test, new PointModel(topLeft.getLatitude(), topLeft.getLongitude()), new PointModel(bottomRight.getLatitude(), bottomRight.getLongitude()));
 
         viewModel.getRestaurants().observe(getViewLifecycleOwner(), restaurantModelDomainList -> {
 
             for (PlacemarkMapObject marker : markers){
-                mapView.getMap().getMapObjects().remove(marker);
+                //mapView.getMap().getMapObjects().remove(marker);
+                marker.getParent().remove(marker);
             }
             markers.clear();
 
@@ -140,6 +147,13 @@ public class MainMapFragment extends Fragment {
         });
 
         mapView.getMap().addCameraListener(cameraListener);
+        viewModel.getSelectedDishes().observe(getViewLifecycleOwner(), dishList -> {
+            Point topLeft = mapView.getMap().getVisibleRegion().getTopLeft();
+            Point bottomRight = mapView.getMap().getVisibleRegion().getBottomRight();
+            viewModel.updateRestaurantsList(dishList, new PointModel(topLeft.getLatitude(), topLeft.getLongitude()),
+                    new PointModel(bottomRight.getLatitude(), bottomRight.getLongitude()));
+
+        });
 
 
     }
@@ -150,11 +164,14 @@ public class MainMapFragment extends Fragment {
             if (b){
                 Log.d("CAMERA", "q");
 
-                List<String> q = new ArrayList<>();
                 Point bottomRight = mapView.getMap().getVisibleRegion().getBottomRight();
                 Point topLeft = mapView.getMap().getVisibleRegion().getTopLeft();
+                Log.d("DDDDDDDDDDD", String.valueOf(viewModel.getSelectedDishes().getValue().size()));
+                for (String qqq : viewModel.getSelectedDishes().getValue()){
+                    Log.d("DDDDDDDDDDD", qqq);
+                }
 
-                viewModel.updateRestaurantsList(q, new PointModel(topLeft.getLatitude(), topLeft.getLongitude()), new PointModel(bottomRight.getLatitude(), bottomRight.getLongitude()));
+                viewModel.updateRestaurantsList(viewModel.getSelectedDishes().getValue(), new PointModel(topLeft.getLatitude(), topLeft.getLongitude()), new PointModel(bottomRight.getLatitude(), bottomRight.getLongitude()));
             }
         }
     };

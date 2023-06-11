@@ -1,5 +1,7 @@
 package com.example.whereiscaesarv2.presentation.ui.fragments.search;
 
+import static com.example.whereiscaesarv2.presentation.app.App.isAuto;
+
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -46,6 +48,7 @@ public class CategoryBSFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        isAuto = false;
         FragmentCategoryBSBinding binding = FragmentCategoryBSBinding.bind(view);
 
         assert getArguments() != null;

@@ -1,5 +1,8 @@
 package com.example.whereiscaesarv2.presentation.ui.fragments.account;
 
+import static com.example.whereiscaesarv2.presentation.app.App.isAuto;
+import static com.example.whereiscaesarv2.presentation.ui.fragments.MainMapFragment.bottomSheetBehavior;
+
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -18,7 +21,6 @@ import com.example.domain.listeners.AccountListener;
 import com.example.domain.repository.AccountRepository;
 import com.example.domain.useCases.GetAccountDataUseCase;
 import com.example.whereiscaesarv2.R;
-import com.example.whereiscaesarv2.presentation.viewModels.sharedViewModels.MapSharedViewModel;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -42,12 +44,10 @@ public class SplashAccountBSFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        MapSharedViewModel mapSharedViewModel = new ViewModelProvider(requireActivity(), (ViewModelProvider.Factory) ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().getApplication())).get(MapSharedViewModel.class);
-        mapSharedViewModel.getBottomSheetBehavior().observe(getViewLifecycleOwner(), bottomSheetBehavior -> {
-            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-            bottomSheetBehavior.setPeekHeight(0);
-        });
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        bottomSheetBehavior.setPeekHeight(0);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        isAuto = false;
     }
 
     @Override
@@ -63,12 +63,15 @@ public class SplashAccountBSFragment extends Fragment {
                 switch (accountModelDomain.type){
 
                     case ("r"):
+                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
                         NavHostFragment.findNavController(SplashAccountBSFragment.this).navigate(R.id.action_splashAccountBSFragment_to_restaurateurProfileBSFragment);
                         break;
                     case ("u"):
+                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
                         NavHostFragment.findNavController(SplashAccountBSFragment.this).navigate(R.id.action_splashAccountBSFragment_to_userProfileBSFragment);
                         break;
                     case ("m"):
+                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
                         NavHostFragment.findNavController(SplashAccountBSFragment.this).navigate(R.id.action_splashAccountBSFragment_to_moderatorProfileBSFragment);
                         break;
                     default:
@@ -81,6 +84,7 @@ public class SplashAccountBSFragment extends Fragment {
 
         }
         else {
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
             NavHostFragment.findNavController(SplashAccountBSFragment.this).navigate(R.id.action_splashAccountBSFragment_to_signInOrSignUpBSFragment);
         }
     }

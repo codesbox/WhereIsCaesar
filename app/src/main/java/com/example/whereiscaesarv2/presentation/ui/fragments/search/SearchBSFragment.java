@@ -1,13 +1,19 @@
 package com.example.whereiscaesarv2.presentation.ui.fragments.search;
 
+import static com.example.whereiscaesarv2.presentation.app.App.isAuto;
+import static com.example.whereiscaesarv2.presentation.ui.fragments.MainMapFragment.bottomSheetBehavior;
+
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,12 +23,14 @@ import com.example.whereiscaesarv2.databinding.FragmentSearchBSBinding;
 import com.example.whereiscaesarv2.presentation.ui.recycler.RequestSearchAdapter;
 import com.example.whereiscaesarv2.presentation.ui.recycler.SearchAdapter;
 import com.example.whereiscaesarv2.presentation.util.listeners.SearchRecyclerClickListener;
-import com.example.whereiscaesarv2.presentation.viewModels.sharedViewModels.MapSharedViewModel;
 import com.example.whereiscaesarv2.presentation.viewModels.sharedViewModels.SearchSharedViewModel;
+import com.example.whereiscaesarv2.presentation.viewModels.viewmodels.MainMapFragmentViewModel;
+import com.example.whereiscaesarv2.presentation.viewModels.viewmodels.MainMapFragmentViewModelFactory;
 import com.example.whereiscaesarv2.presentation.viewModels.viewmodels.SearchBSFragmentViewModel;
 import com.example.whereiscaesarv2.presentation.viewModels.viewmodels.SearchBSFragmentViewModelFactory;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SearchBSFragment extends Fragment {
@@ -42,13 +50,11 @@ public class SearchBSFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         FragmentSearchBSBinding binding = FragmentSearchBSBinding.bind(view);
 
-        MapSharedViewModel mapSharedViewModel = new ViewModelProvider(requireActivity(), (ViewModelProvider.Factory) ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().getApplication())).get(MapSharedViewModel.class);
         SearchSharedViewModel searchSharedViewModel = new ViewModelProvider(requireActivity(), (ViewModelProvider.Factory) ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().getApplication())).get(SearchSharedViewModel.class);
-
-        mapSharedViewModel.getBottomSheetBehavior().observe(getViewLifecycleOwner(), bottomSheetBehavior -> {
-            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-            bottomSheetBehavior.setPeekHeight(0);
-        });
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        bottomSheetBehavior.setPeekHeight(0);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        isAuto = false;
 
         SearchRecyclerClickListener listener = new SearchRecyclerClickListener() {
             @Override
@@ -105,5 +111,20 @@ public class SearchBSFragment extends Fragment {
 
         vm.getDishes().observe(getViewLifecycleOwner(), dishModelDomainList -> adapter.setItemList(dishModelDomainList));
         searchSharedViewModel.getData().observe(getViewLifecycleOwner(), dishModelDomainList -> requestAdapter.setItemList(dishModelDomainList));
+
+        binding.button3.setOnClickListener(v -> {
+
+            MainMapFragmentViewModel mapFragmentViewModel = new ViewModelProvider(requireActivity(), new MainMapFragmentViewModelFactory()).get(MainMapFragmentViewModel.class);
+            List<String> dishNames = new ArrayList<>();
+            List<DishModelDomain> dishModelDomainList = searchSharedViewModel.getData().getValue();
+            for (DishModelDomain dishModelDomain : dishModelDomainList){
+                dishNames.add(dishModelDomain.title);
+            }
+            mapFragmentViewModel.setSelectedDishes(dishNames);
+            isAuto = true;
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+            NavHostFragment.findNavController(this).navigate(R.id.action_searchBSFragment_to_restaurantsListFragment);
+
+        });
     }
 }
