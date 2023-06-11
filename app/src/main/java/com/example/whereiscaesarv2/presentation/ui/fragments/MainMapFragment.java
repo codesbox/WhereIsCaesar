@@ -9,11 +9,23 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentContainerView;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.data.repositories.RestaurantsRepositoryImpl;
+import com.example.data.storages.firebase.RestaurantsStorage;
+import com.example.data.storages.firebase.RestaurantsStorageImpl;
+import com.example.domain.listeners.GetRestaurantsListener;
+import com.example.domain.models.PointModel;
+import com.example.domain.models.RestaurantModelDomain;
+import com.example.domain.repository.RestaurantsRepository;
+import com.example.domain.useCases.GetRestaurantsUseCase;
 import com.example.whereiscaesarv2.R;
 import com.example.whereiscaesarv2.databinding.FragmentMainMapBinding;
+import com.example.whereiscaesarv2.presentation.util.listeners.CameraListenerImpl;
 import com.example.whereiscaesarv2.presentation.viewModels.viewmodels.MainMapFragmentViewModel;
 import com.example.whereiscaesarv2.presentation.viewModels.viewmodels.MainMapFragmentViewModelFactory;
 import com.example.whereiscaesarv2.presentation.viewModels.sharedViewModels.MapSharedViewModel;
@@ -21,14 +33,24 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.yandex.mapkit.Animation;
 import com.yandex.mapkit.MapKitFactory;
 import com.yandex.mapkit.geometry.Point;
+import com.yandex.mapkit.map.CameraListener;
 import com.yandex.mapkit.map.CameraPosition;
+import com.yandex.mapkit.map.CameraUpdateReason;
+import com.yandex.mapkit.map.Map;
+import com.yandex.mapkit.map.PlacemarkMapObject;
 import com.yandex.mapkit.mapview.MapView;
+import com.yandex.runtime.image.ImageProvider;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class MainMapFragment extends Fragment {
 
     MainMapFragmentViewModel viewModel;
     public BottomSheetBehavior<FragmentContainerView> bottomSheetBehavior;
+
+    List<PlacemarkMapObject> markers = new ArrayList<>();
 
     private MapView mapView;
     double yotcLat = 55.751244;
@@ -57,6 +79,12 @@ public class MainMapFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         FragmentMainMapBinding binding = FragmentMainMapBinding.bind(view);
+
+        ImageProvider imageProvider = ImageProvider.fromResource(
+                requireContext(),
+                R.drawable.marker
+        );
+
         mapView = binding.mapView;
         MapSharedViewModel mapSharedViewModel = new ViewModelProvider(requireActivity(), (ViewModelProvider.Factory) ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().getApplication())).get(MapSharedViewModel.class);
 
@@ -66,9 +94,11 @@ public class MainMapFragment extends Fragment {
 
         mapView.getMap().move(
                 new CameraPosition(new Point(yotcLat, yotcLon), 10.0f, 0.0f, 0.0f),
-                new Animation(Animation.Type.SMOOTH, 1),
+                new Animation(Animation.Type.SMOOTH, 0),
                 null);
         mapContext = requireContext();
+
+
 
         bottomSheetBehavior = BottomSheetBehavior.from(binding.containerBottomSheet);
         bottomSheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
@@ -84,7 +114,50 @@ public class MainMapFragment extends Fragment {
             }
         });
         mapSharedViewModel.setBehaviorMutableLiveData(bottomSheetBehavior);
+
+        Point topLeft = mapView.getMap().getVisibleRegion().getTopLeft();
+        Point bottomRight = mapView.getMap().getVisibleRegion().getBottomRight();
+        List<String> test = new ArrayList<>();
+        //test.add("Салат цезарь");
+
+        viewModel.updateRestaurantsList(test, new PointModel(topLeft.getLatitude(), topLeft.getLongitude()), new PointModel(bottomRight.getLatitude(), bottomRight.getLongitude()));
+
+        viewModel.getRestaurants().observe(getViewLifecycleOwner(), restaurantModelDomainList -> {
+
+            for (PlacemarkMapObject marker : markers){
+                mapView.getMap().getMapObjects().remove(marker);
+            }
+            markers.clear();
+
+            for (RestaurantModelDomain restaurant : restaurantModelDomainList){
+
+                PlacemarkMapObject marker = mapView.getMap().getMapObjects().addPlacemark(
+                        new Point(restaurant.geoPoint.latitude, restaurant.geoPoint.longitude), imageProvider);
+                marker.setDraggable(true);
+                markers.add(marker);
+
+            }
+        });
+
+        mapView.getMap().addCameraListener(cameraListener);
+
+
     }
+
+    private final CameraListener cameraListener = new CameraListener() {
+        @Override
+        public void onCameraPositionChanged(@NonNull Map map, @NonNull CameraPosition cameraPosition, @NonNull CameraUpdateReason cameraUpdateReason, boolean b) {
+            if (b){
+                Log.d("CAMERA", "q");
+
+                List<String> q = new ArrayList<>();
+                Point bottomRight = mapView.getMap().getVisibleRegion().getBottomRight();
+                Point topLeft = mapView.getMap().getVisibleRegion().getTopLeft();
+
+                viewModel.updateRestaurantsList(q, new PointModel(topLeft.getLatitude(), topLeft.getLongitude()), new PointModel(bottomRight.getLatitude(), bottomRight.getLongitude()));
+            }
+        }
+    };
 
     @Override
     public void onStart() {

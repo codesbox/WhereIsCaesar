@@ -1,14 +1,18 @@
 package com.example.whereiscaesarv2.presentation.viewModels.viewmodels;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.data.repositories.AccountRepositoryImpl;
 import com.example.data.storages.firebase.AccountStorage;
 import com.example.data.storages.firebase.AccountStorageImpl;
+import com.example.domain.models.RestaurantModelDomain;
 import com.example.domain.repository.AccountRepository;
 import com.example.domain.useCases.AddUserUseCase;
+
+import java.util.List;
 
 public class SignUpViewModelFactory implements ViewModelProvider.Factory {
 
