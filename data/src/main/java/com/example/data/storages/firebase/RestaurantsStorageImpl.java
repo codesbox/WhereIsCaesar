@@ -8,6 +8,7 @@ import android.util.Log;
 import com.example.data.storages.models.RestaurantModelData;
 import com.example.domain.listeners.GetRestaurantsListener;
 import com.example.domain.models.DishModelDomain;
+import com.example.domain.models.MapDishCard;
 import com.example.domain.models.PointModel;
 import com.example.domain.models.RestaurantModelDomain;
 import com.google.android.gms.tasks.Task;
@@ -27,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class RestaurantsStorageImpl implements RestaurantsStorage{
 
@@ -85,7 +87,6 @@ public class RestaurantsStorageImpl implements RestaurantsStorage{
 
                 for (DocumentSnapshot documentSnapshot : combinedResults){
 
-                    String restaurantName = documentSnapshot.getId();
 
                     GeoPoint geoPoint = documentSnapshot.getGeoPoint("geoPoint");
                     double latitude = geoPoint.getLatitude();
@@ -95,10 +96,14 @@ public class RestaurantsStorageImpl implements RestaurantsStorage{
 
                     String json = new Gson().toJson(documentSnapshot.get("dishes"));
                     Type type = new TypeToken<Map<String, Object>>(){}.getType();
+
                     Map<String, Object> dishesMap = new Gson().fromJson(json, type);
-                    List<String> dishNameList = new ArrayList<>();
+
+                    List<MapDishCard> dishMapList = new ArrayList<>();
+
                     for (Map.Entry<String, Object> entry : dishesMap.entrySet()){
-                        dishNameList.add(entry.getKey());
+                        Map<String, Object> dishValueMap = (Map<String, Object>) entry.getValue();
+                        dishMapList.add(new MapDishCard(entry.getKey(), (String) dishValueMap.get("imageUrl"), ((Double) dishValueMap.get("count")).intValue(), ((Double) dishValueMap.get("sum")).intValue(), (String) dishValueMap.get("category")));
                     }
 
                     Integer allSum = documentSnapshot.getDouble("allSum").intValue();
@@ -106,9 +111,10 @@ public class RestaurantsStorageImpl implements RestaurantsStorage{
                     Integer allCount = documentSnapshot.getDouble("allCount").intValue();
 
                     String userId = documentSnapshot.getString("userId");
+                    String restaurantName = documentSnapshot.getString("name");
 
                     RestaurantModelData restaurantModelData = new RestaurantModelData(restaurantName,
-                            userId ,allSum, allCount, point, dishNameList);
+                            userId ,allSum, allCount, point, dishMapList);
                     restaurantModelDataList.add(restaurantModelData);
                 }
 
@@ -120,7 +126,6 @@ public class RestaurantsStorageImpl implements RestaurantsStorage{
                             restaurantModelData.dishNameList));
 
                 }
-                Log.d("FHJFHFHJFHFHJFHFJHFHJFHFHFH", String.valueOf(restaurantModelDomainList.size()));
                 listener.getRestaurants(restaurantModelDomainList);
             }
             else{

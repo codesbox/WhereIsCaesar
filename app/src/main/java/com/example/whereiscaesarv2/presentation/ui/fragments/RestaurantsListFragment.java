@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,6 +28,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 import static com.example.whereiscaesarv2.presentation.ui.fragments.MainMapFragment.bottomSheetBehavior;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -52,6 +54,13 @@ public class RestaurantsListFragment extends Fragment {
         RestaurantsListCardClickListener listener = new RestaurantsListCardClickListener() {
             @Override
             public void onCardClick(RestaurantModelDomain restaurantModelDomain) {
+                isAuto = true;
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("restaurantCard", restaurantModelDomain);
+                MainMapFragmentViewModel viewModel = new ViewModelProvider(requireActivity(), new MainMapFragmentViewModelFactory()).get(MainMapFragmentViewModel.class);
+                bundle.putStringArrayList("selectedDishes", (ArrayList<String>) viewModel.getSelectedDishes().getValue());
+                NavHostFragment.findNavController(RestaurantsListFragment.this).navigate(R.id.action_restaurantsListFragment_to_restaurantCardBSFragment, bundle);
 
             }
 

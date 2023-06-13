@@ -63,16 +63,22 @@ public class SplashAccountBSFragment extends Fragment {
                 switch (accountModelDomain.type){
 
                     case ("r"):
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("account", accountModelDomain);
                         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-                        NavHostFragment.findNavController(SplashAccountBSFragment.this).navigate(R.id.action_splashAccountBSFragment_to_restaurateurProfileBSFragment);
+                        NavHostFragment.findNavController(SplashAccountBSFragment.this).navigate(R.id.action_splashAccountBSFragment_to_restaurateurProfileBSFragment, bundle);
                         break;
                     case ("u"):
+                        Bundle bundle1 = new Bundle();
+                        bundle1.putSerializable("account", accountModelDomain);
                         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-                        NavHostFragment.findNavController(SplashAccountBSFragment.this).navigate(R.id.action_splashAccountBSFragment_to_userProfileBSFragment);
+                        NavHostFragment.findNavController(SplashAccountBSFragment.this).navigate(R.id.action_splashAccountBSFragment_to_userProfileBSFragment, bundle1);
                         break;
                     case ("m"):
+                        Bundle bundle2 = new Bundle();
+                        bundle2.putSerializable("account", accountModelDomain);
                         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-                        NavHostFragment.findNavController(SplashAccountBSFragment.this).navigate(R.id.action_splashAccountBSFragment_to_moderatorProfileBSFragment);
+                        NavHostFragment.findNavController(SplashAccountBSFragment.this).navigate(R.id.action_splashAccountBSFragment_to_moderatorProfileBSFragment, bundle2);
                         break;
                     default:
                         break;

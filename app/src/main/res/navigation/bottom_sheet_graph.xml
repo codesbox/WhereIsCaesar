@@ -30,5 +30,30 @@
     <fragment
         android:id="@+id/restaurantsListFragment"
         android:name="com.example.whereiscaesarv2.presentation.ui.fragments.RestaurantsListFragment"
-        android:label="RestaurantsListFragment" />
+        android:label="RestaurantsListFragment" >
+        <action
+            android:id="@+id/action_restaurantsListFragment_to_restaurantCardBSFragment"
+            app:destination="@id/restaurantCardBSFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/restaurantCardBSFragment"
+        android:name="com.example.whereiscaesarv2.presentation.ui.fragments.RestaurantCardBSFragment"
+        android:label="RestaurantCardBSFragment" >
+        <action
+            android:id="@+id/action_restaurantCardBSFragment_to_dishBSFragment"
+            app:destination="@id/dishBSFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/dishBSFragment"
+        android:name="com.example.whereiscaesarv2.presentation.ui.fragments.DishBSFragment"
+        android:label="fragment_dish_b_s"
+        tools:layout="@layout/fragment_dish_b_s" >
+        <action
+            android:id="@+id/action_dishBSFragment_to_addFeedbackBSFragment"
+            app:destination="@id/addFeedbackBSFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addFeedbackBSFragment"
+        android:name="com.example.whereiscaesarv2.presentation.ui.fragments.AddFeedbackBSFragment"
+        android:label="AddFeedbackBSFragment" />
 </navigation>

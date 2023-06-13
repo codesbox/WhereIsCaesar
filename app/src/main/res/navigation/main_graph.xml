@@ -16,6 +16,12 @@
         <action
             android:id="@+id/action_mainMapFragment_to_signInFragment"
             app:destination="@id/signInFragment" />
+        <action
+            android:id="@+id/action_mainMapFragment_to_addRestaurantFragment2"
+            app:destination="@id/addRestaurantFragment2" />
+        <action
+            android:id="@+id/action_mainMapFragment_to_myRestaurantsFragment2"
+            app:destination="@id/myRestaurantsFragment2" />
     </fragment>
     <fragment
         android:id="@+id/categoryBSFragment"
@@ -36,4 +42,13 @@
         android:name="com.example.whereiscaesarv2.presentation.ui.fragments.account.SignUpFragment"
         android:label="fragment_sign_up"
         tools:layout="@layout/fragment_sign_up" />
+    <fragment
+        android:id="@+id/addRestaurantFragment2"
+        android:name="com.example.whereiscaesarv2.presentation.ui.fragments.AddRestaurantFragment"
+        android:label="AddRestaurantFragment" />
+    <fragment
+        android:id="@+id/myRestaurantsFragment2"
+        android:name="com.example.whereiscaesarv2.presentation.ui.fragments.MyRestaurantsFragment"
+        android:label="fragment_my_restaurants"
+        tools:layout="@layout/fragment_my_restaurants" />
 </navigation>

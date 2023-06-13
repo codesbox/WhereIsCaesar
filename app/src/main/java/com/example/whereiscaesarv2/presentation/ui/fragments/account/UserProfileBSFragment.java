@@ -73,8 +73,8 @@ public class UserProfileBSFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        isAuto = false;
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        isAuto = false;
     }
 }

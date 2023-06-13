@@ -40,7 +40,14 @@
         android:id="@+id/moderatorProfileBSFragment"
         android:name="com.example.whereiscaesarv2.presentation.ui.fragments.account.ModeratorProfileBSFragment"
         android:label="fragment_moderator_profile_bs"
-        tools:layout="@layout/fragment_moderator_profile_bs" />
+        tools:layout="@layout/fragment_moderator_profile_bs" >
+        <action
+            android:id="@+id/action_moderatorProfileBSFragment_to_addRestaurantFragment"
+            app:destination="@id/addRestaurantFragment" />
+        <action
+            android:id="@+id/action_moderatorProfileBSFragment_to_myRestaurantsFragment"
+            app:destination="@id/myRestaurantsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/restaurateurProfileBSFragment"
         android:name="com.example.whereiscaesarv2.presentation.ui.fragments.account.RestaurateurProfileBSFragment"
@@ -51,4 +58,13 @@
         android:name="com.example.whereiscaesarv2.presentation.ui.fragments.account.SignInOrSignUpBSFragment"
         android:label="fragment_sign_in_or_sign_up_b_s"
         tools:layout="@layout/fragment_sign_in_or_sign_up_b_s" />
+    <fragment
+        android:id="@+id/addRestaurantFragment"
+        android:name="com.example.whereiscaesarv2.presentation.ui.fragments.AddRestaurantFragment"
+        android:label="AddRestaurantFragment" />
+    <fragment
+        android:id="@+id/myRestaurantsFragment"
+        android:name="com.example.whereiscaesarv2.presentation.ui.fragments.MyRestaurantsFragment"
+        android:label="fragment_my_restaurants"
+        tools:layout="@layout/fragment_my_restaurants" />
 </navigation>

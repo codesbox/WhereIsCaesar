@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.ui.fragments.account.UserProfileBSFragment">
+    tools:context=".presentation.ui.fragments.account.UserProfileBSFragment"
+    android:background="@drawable/bottom_sheet_bg">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout2"
@@ -115,7 +116,7 @@
     <com.google.android.material.card.MaterialCardView
         app:cardElevation="1dp"
         android:layout_width="match_parent"
-        android:id="@+id/qqq"
+        android:id="@+id/addRes"
         android:layout_marginEnd="10dp"
         android:layout_marginStart="10dp"
         android:layout_height="85dp"

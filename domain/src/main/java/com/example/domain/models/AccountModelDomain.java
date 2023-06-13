@@ -1,6 +1,8 @@
 package com.example.domain.models;
 
-public class AccountModelDomain {
+import java.io.Serializable;
+
+public class AccountModelDomain implements Serializable {
     public String firstName, lastName, phoneNumber, id, type;
     public Integer feedBackCount;
 

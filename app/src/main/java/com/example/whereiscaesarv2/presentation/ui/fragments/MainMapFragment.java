@@ -27,6 +27,7 @@ import com.example.domain.useCases.GetRestaurantsUseCase;
 import com.example.whereiscaesarv2.R;
 import com.example.whereiscaesarv2.databinding.FragmentMainMapBinding;
 import com.example.whereiscaesarv2.presentation.util.listeners.CameraListenerImpl;
+import com.example.whereiscaesarv2.presentation.util.listeners.MapObjectTapListenerImpl;
 import com.example.whereiscaesarv2.presentation.viewModels.viewmodels.MainMapFragmentViewModel;
 import com.example.whereiscaesarv2.presentation.viewModels.viewmodels.MainMapFragmentViewModelFactory;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -83,7 +84,7 @@ public class MainMapFragment extends Fragment {
 
         ImageProvider imageProvider = ImageProvider.fromResource(
                 requireContext(),
-                R.drawable.marker
+                R.drawable.point4
         );
 
         mapView = binding.mapView;
@@ -140,8 +141,10 @@ public class MainMapFragment extends Fragment {
 
                 PlacemarkMapObject marker = mapView.getMap().getMapObjects().addPlacemark(
                         new Point(restaurant.geoPoint.latitude, restaurant.geoPoint.longitude), imageProvider);
+                marker.addTapListener(new MapObjectTapListenerImpl(restaurant, binding.containerBottomSheet, viewModel.getSelectedDishes().getValue()));
                 marker.setDraggable(true);
                 markers.add(marker);
+
 
             }
         });

@@ -1,6 +1,7 @@
 package com.example.whereiscaesarv2.presentation.ui.fragments.account;
 
 import static com.example.whereiscaesarv2.presentation.app.App.isAuto;
+import static com.example.whereiscaesarv2.presentation.ui.fragments.MainMapFragment.bottomSheetBehavior;
 
 import android.os.Bundle;
 
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.whereiscaesarv2.R;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -71,6 +73,8 @@ public class ModeratorProfileBSFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
         isAuto = false;
 
     }

@@ -17,6 +17,7 @@ import com.example.whereiscaesarv2.databinding.SearchItemBinding;
 import com.example.whereiscaesarv2.presentation.util.listeners.RestaurantsListCardClickListener;
 import com.example.whereiscaesarv2.presentation.util.listeners.SearchRecyclerClickListener;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,6 +80,10 @@ public class RestaurantsListAdapter extends RecyclerView.Adapter<RestaurantsList
         public void bind(RestaurantModelDomain restaurantModelDomain){
             binding.name.setText(restaurantModelDomain.restaurantName);
             binding.cardView.setOnClickListener(v -> listener.onCardClick(restaurantModelDomain));
+            double result = (double) restaurantModelDomain.allSum / restaurantModelDomain.allCount;
+            DecimalFormat decimalFormat = new DecimalFormat("#0.0");
+            String formattedResult = decimalFormat.format(result);
+            binding.restEstimation.setText(formattedResult);
         }
     }
 }

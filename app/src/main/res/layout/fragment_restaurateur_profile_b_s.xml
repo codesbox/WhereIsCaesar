@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.ui.fragments.account.RestaurateurProfileBSFragment">
+    tools:context=".presentation.ui.fragments.account.RestaurateurProfileBSFragment"
+    android:background="@drawable/bottom_sheet_bg">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout2"
@@ -45,28 +46,26 @@
 
 
     <com.google.android.material.card.MaterialCardView
-        app:cardElevation="1dp"
-        android:id="@+id/myFeedbacks"
-        android:layout_width="190dp"
+        android:id="@+id/myRestaurants"
+        android:layout_width="173dp"
         android:layout_height="79dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="44dp"
-        app:layout_constraintEnd_toStartOf="@+id/materialCardView"
-        app:layout_constraintHorizontal_bias="0.08"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" >
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="16dp"
+        app:cardElevation="1dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/addRes">
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent">
 
 
             <TextView
                 android:id="@+id/textView11"
-                android:layout_width="133dp"
-                android:layout_height="27dp"
-                android:text="Мои отзывы"
+                android:layout_width="137dp"
+                android:layout_height="58dp"
+                android:text="Мои рестораны"
                 android:textColor="@color/black_300"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -80,21 +79,19 @@
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
-        app:cardElevation="1dp"
         android:id="@+id/materialCardView3"
         android:layout_width="190dp"
         android:layout_height="79dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="14dp"
-        app:layout_constraintEnd_toStartOf="@+id/materialCardView"
-        app:layout_constraintHorizontal_bias="0.08"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
+        app:cardElevation="1dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/myFeedbacks">
+        app:layout_constraintTop_toBottomOf="@+id/addRes">
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
 
             <TextView
@@ -113,22 +110,53 @@
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/addRes"
+        android:layout_width="374dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="20dp"
         app:cardElevation="1dp"
-        android:layout_width="match_parent"
-        android:id="@+id/qqq"
-        android:layout_marginEnd="10dp"
-        android:layout_marginStart="10dp"
-        android:layout_height="85dp"
-        android:layout_marginTop="26dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.428"
+        app:layout_constraintHorizontal_bias="0.432"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/materialCardView3" >
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
+
+
+            <TextView
+                android:id="@+id/textView15"
+                android:layout_width="wrap_content"
+                android:layout_height="26dp"
+                android:text="Добавить ресторан"
+                android:textColor="@color/black_300"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.501"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.491" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/qqw"
+        android:layout_width="374dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="204dp"
+        app:cardElevation="1dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.567"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
 
             <TextView
@@ -140,41 +168,11 @@
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.501"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.491" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.google.android.material.card.MaterialCardView>
-
-    <com.google.android.material.card.MaterialCardView
-        app:cardElevation="1dp"
-        android:id="@+id/materialCardView"
-        android:layout_width="170dp"
-        android:layout_height="170dp"
-        android:layout_marginTop="44dp"
-        android:layout_marginEnd="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" >
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-
-            <TextView
-                android:id="@+id/addFeedback"
-                android:layout_width="92dp"
-                android:layout_height="51dp"
-                android:text="Написать отзыв"
-                android:textColor="@color/black_300"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
     </com.google.android.material.card.MaterialCardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
