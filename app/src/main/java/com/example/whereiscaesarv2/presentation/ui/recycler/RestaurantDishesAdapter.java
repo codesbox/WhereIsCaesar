@@ -13,6 +13,7 @@ import com.example.whereiscaesarv2.R;
 import com.example.whereiscaesarv2.databinding.RestaurantDishCardLayoutBinding;
 import com.example.whereiscaesarv2.presentation.util.listeners.RestaurantDishCardClickListener;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,7 +65,17 @@ public class RestaurantDishesAdapter extends RecyclerView.Adapter<RestaurantDish
         }
         public void bind(MapDishCard mapDishCard){
             binding.name.setText(mapDishCard.dishName);
-            binding.estimation.setText(mapDishCard.estimation.toString());
+
+            if (mapDishCard.sum == 0.0){
+                binding.estimation.setText("0.0");
+            }
+            else{
+                double result = (double) mapDishCard.sum / mapDishCard.counter;
+                DecimalFormat decimalFormat = new DecimalFormat("#0.0");
+                String formattedResult = decimalFormat.format(result);
+                binding.estimation.setText(formattedResult);
+
+            }
             binding.counter.setText(String.format("Отзывов: %s", mapDishCard.counter.toString()));
             Glide.with(context)
                     .load(mapDishCard.imageUrl)

@@ -55,11 +55,6 @@ public class CategoryBSFragment extends Fragment {
         categoryName = getArguments().getString("categoryName");
         imageUrl = getArguments().getString("imageUrl");
         isCategory = getArguments().getBoolean("isCategory");
-        Glide.with(requireContext())
-                .load(imageUrl)
-                .error(R.drawable.image_not_supported)
-                .into(binding.topImage);
-        binding.topCategoryName.setText(categoryName);
         binding.categoryNameTextView.setText(categoryName);
         binding.popToBackStackButton.setOnClickListener(v -> NavHostFragment.findNavController(this).popBackStack());
         binding.cancelButton.setOnClickListener(v -> NavHostFragment.findNavController(this).popBackStack(R.id.mainMapFragment, false));

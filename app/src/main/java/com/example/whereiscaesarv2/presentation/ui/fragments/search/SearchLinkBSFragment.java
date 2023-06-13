@@ -17,7 +17,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.example.whereiscaesarv2.R;
 import com.example.whereiscaesarv2.databinding.FragmentSearchLinkBSBinding;
+import com.example.whereiscaesarv2.presentation.viewModels.sharedViewModels.SearchSharedViewModel;
+import com.example.whereiscaesarv2.presentation.viewModels.viewmodels.MainMapFragmentViewModel;
+import com.example.whereiscaesarv2.presentation.viewModels.viewmodels.MainMapFragmentViewModelFactory;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+
+import java.util.ArrayList;
 
 
 public class SearchLinkBSFragment extends Fragment {
@@ -31,8 +36,15 @@ public class SearchLinkBSFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        MainMapFragmentViewModel viewModel = new ViewModelProvider(requireActivity(), new MainMapFragmentViewModelFactory()).get(MainMapFragmentViewModel.class);
+        viewModel.setSelectedDishes(new ArrayList<>());
+
+        SearchSharedViewModel searchSharedViewModel = new ViewModelProvider(requireActivity(), (ViewModelProvider.Factory) ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().getApplication())).get(SearchSharedViewModel.class);
+        searchSharedViewModel.deleteData();
+
         FragmentSearchLinkBSBinding binding = FragmentSearchLinkBSBinding.bind(view);
         bottomSheetBehavior.setHideable(true);
+        bottomSheetBehavior.setDraggable(true);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         bottomSheetBehavior.setPeekHeight(350);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);

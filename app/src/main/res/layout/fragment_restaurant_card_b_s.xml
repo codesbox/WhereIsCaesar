@@ -6,19 +6,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/bottom_sheet_bg"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_marginTop="50dp">
 
 
     <TextView
         android:id="@+id/textView10"
-        android:layout_width="256dp"
-        android:layout_height="21dp"
-        android:layout_marginTop="20dp"
+        android:layout_width="304dp"
+        android:layout_height="68dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
         android:text="197262 937251"
         android:textColor="@color/black_300"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.088"
+        app:layout_constraintHorizontal_bias="0.666"
         app:layout_constraintStart_toEndOf="@+id/textView9"
         app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
@@ -26,8 +27,8 @@
         android:id="@+id/textView9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="18dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="29dp"
         android:text="Адрес"
         android:textColor="@color/black_500"
         android:textSize="18dp"
@@ -41,9 +42,9 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
         android:background="@drawable/rating_bg"
-        android:paddingLeft="15dp"
+        android:paddingLeft="8dp"
         android:paddingTop="6dp"
-        android:text="7"
+        android:text="7.9"
         android:textColor="@color/white"
         android:textSize="20sp"
         app:layout_constraintStart_toEndOf="@+id/restaurantName"
@@ -70,19 +71,6 @@
         android:text="ресторан"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/restaurantName" />
-
-    <TextView
-        android:id="@+id/feedBackCount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
-        android:text="Оценок: 10000"
-        android:textColor="@color/black_500"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.508"
-        app:layout_constraintStart_toEndOf="@+id/imageView3"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <FrameLayout
         android:id="@+id/frameLayout"
@@ -132,7 +120,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
-                        android:text="выбранные_блюда"
+                        android:text="Выбранные блюда"
                         android:textColor="@color/white"
                         android:textSize="32sp"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -159,7 +147,9 @@
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="370sp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="200sp">
+                android:layout_marginBottom="200sp"
+                app:cardElevation="5dp"
+                android:backgroundTint="@color/white">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -173,7 +163,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
-                        android:text="Все оцененное меню"
+                        android:text="Все меню"
                         android:textColor="@color/black_400"
                         android:textSize="32sp"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -305,6 +295,28 @@
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="178dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="184dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/rectangle_4108" />
+
+    <ImageView
+        android:id="@+id/cancel_button"
+        android:layout_width="36dp"
+        android:layout_height="34dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/cancel" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

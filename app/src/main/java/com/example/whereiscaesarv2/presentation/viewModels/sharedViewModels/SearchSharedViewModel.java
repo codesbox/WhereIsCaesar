@@ -21,6 +21,11 @@ public class SearchSharedViewModel extends ViewModel {
         mutableLiveData.setValue(list);
     }
 
+    public void deleteData(){
+        list = new ArrayList<>();
+        mutableLiveData.setValue(list);
+    }
+
     public LiveData<List<DishModelDomain>> getData(){ return mutableLiveData; }
 
 }

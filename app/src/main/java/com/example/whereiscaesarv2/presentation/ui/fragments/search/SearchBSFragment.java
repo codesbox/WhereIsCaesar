@@ -13,6 +13,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -122,8 +123,21 @@ public class SearchBSFragment extends Fragment {
             }
             mapFragmentViewModel.setSelectedDishes(dishNames);
             isAuto = true;
+            bottomSheetBehavior.setHideable(true);
+            bottomSheetBehavior.setDraggable(true);
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-            NavHostFragment.findNavController(this).navigate(R.id.action_searchBSFragment_to_restaurantsListFragment);
+
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    NavHostFragment.findNavController(SearchBSFragment.this).navigate(R.id.action_searchBSFragment_to_restaurantsListFragment);
+
+                }
+            }, 100);
+
+
+
 
         });
     }

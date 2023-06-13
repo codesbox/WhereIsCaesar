@@ -8,10 +8,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,22 +47,37 @@ public class RestaurantsListFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         FragmentRestaurantsListBinding binding = FragmentRestaurantsListBinding.bind(view);
-        bottomSheetBehavior.setHideable(false);
+        bottomSheetBehavior.setHideable(true);
+        bottomSheetBehavior.setDraggable(true);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-        bottomSheetBehavior.setPeekHeight(250);
+        bottomSheetBehavior.setPeekHeight(400);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        bottomSheetBehavior.setHideable(false);
         isAuto = false;
+
+        binding.cancelButton.setOnClickListener(v -> {
+            NavHostFragment.findNavController(this).popBackStack(R.id.searchLinkBSFragment, false);
+        });
 
         RestaurantsListCardClickListener listener = new RestaurantsListCardClickListener() {
             @Override
             public void onCardClick(RestaurantModelDomain restaurantModelDomain) {
                 isAuto = true;
+                bottomSheetBehavior.setHideable(true);
+                bottomSheetBehavior.setDraggable(true);
+                bottomSheetBehavior.setPeekHeight(0);
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("restaurantCard", restaurantModelDomain);
                 MainMapFragmentViewModel viewModel = new ViewModelProvider(requireActivity(), new MainMapFragmentViewModelFactory()).get(MainMapFragmentViewModel.class);
                 bundle.putStringArrayList("selectedDishes", (ArrayList<String>) viewModel.getSelectedDishes().getValue());
-                NavHostFragment.findNavController(RestaurantsListFragment.this).navigate(R.id.action_restaurantsListFragment_to_restaurantCardBSFragment, bundle);
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        NavHostFragment.findNavController(RestaurantsListFragment.this).navigate(R.id.action_restaurantsListFragment_to_restaurantCardBSFragment, bundle);
+                    }
+                }, 100);
 
             }
 

@@ -38,9 +38,10 @@ public class MapObjectTapListenerImpl implements MapObjectTapListener {
     public boolean onMapObjectTap(@NonNull MapObject mapObject, @NonNull Point point) {
 
         isAuto = true;
-        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-        bottomSheetBehavior.setHideable(false);
+        bottomSheetBehavior.setHideable(true);
         bottomSheetBehavior.setDraggable(true);
+        bottomSheetBehavior.setPeekHeight(0);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         Bundle bundle = new Bundle();
         bundle.putSerializable("restaurantCard", restaurantModelDomain);
         bundle.putStringArrayList("selectedDishes", (ArrayList<String>) selectedDishes);

@@ -84,6 +84,8 @@ public class RestaurantsListAdapter extends RecyclerView.Adapter<RestaurantsList
             DecimalFormat decimalFormat = new DecimalFormat("#0.0");
             String formattedResult = decimalFormat.format(result);
             binding.restEstimation.setText(formattedResult);
+            binding.counter.setText(String.format("Оценок: %s", restaurantModelDomain.allCount.toString()));
+
         }
     }
 }

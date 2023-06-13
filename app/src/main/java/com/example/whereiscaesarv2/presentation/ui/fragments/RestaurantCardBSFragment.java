@@ -13,6 +13,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ import com.example.whereiscaesarv2.presentation.viewModels.sharedViewModels.Sear
 import com.example.whereiscaesarv2.presentation.viewModels.viewmodels.RestaurantCardBSFragmentViewModel;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,10 +47,15 @@ public class RestaurantCardBSFragment extends Fragment {
 
         FragmentRestaurantCardBSBinding binding = FragmentRestaurantCardBSBinding.bind(view);
 
-        bottomSheetBehavior.setPeekHeight(200);
+
         bottomSheetBehavior.setHideable(false);
+        bottomSheetBehavior.setDraggable(true);
+        bottomSheetBehavior.setPeekHeight(400);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
         isAuto = false;
+        binding.cancelButton.setOnClickListener(v -> {
+            NavHostFragment.findNavController(RestaurantCardBSFragment.this).popBackStack();
+        });
 
         RestaurantCardBSFragmentViewModel vm = new ViewModelProvider(requireActivity(), (ViewModelProvider.Factory) ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().getApplication())).get(RestaurantCardBSFragmentViewModel.class);
 
@@ -60,14 +67,16 @@ public class RestaurantCardBSFragment extends Fragment {
         vm.getRestaurant().observe(getViewLifecycleOwner(), restaurantModelDomain -> {
 
             binding.restaurantName.setText(restaurantModelDomain.restaurantName);
-            if (restaurantModelDomain.allSum == 0){
-                binding.imageView3.setText("0");
+            if (restaurantModelDomain.allSum == 0.0){
+                binding.imageView3.setText("0.0");
             }
             else{
-                binding.imageView3.setText(String.valueOf(restaurantModelDomain.allSum / restaurantModelDomain.allCount));
+                double result = (double) restaurantModelDomain.allSum / restaurantModelDomain.allCount;
+                DecimalFormat decimalFormat = new DecimalFormat("#0.0");
+                String formattedResult = decimalFormat.format(result);
+                binding.imageView3.setText(formattedResult);
 
             }
-            binding.feedBackCount.setText(String.format("Оценок: %s", restaurantModelDomain.allCount));
 
             List<MapDishCard> salads = new ArrayList<>();
             List<MapDishCard> hotDishes = new ArrayList<>();
@@ -100,11 +109,22 @@ public class RestaurantCardBSFragment extends Fragment {
                 @Override
                 public void onCardClick(MapDishCard mapDishCard) {
                     isAuto = true;
+                    bottomSheetBehavior.setHideable(true);
+                    bottomSheetBehavior.setDraggable(true);
+                    bottomSheetBehavior.setPeekHeight(0);
                     bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
                     Bundle bundle = new Bundle();
                     bundle.putString("restaurantName", vm.getRestaurant().getValue().restaurantName);
                     bundle.putSerializable("dishCard", mapDishCard);
-                    NavHostFragment.findNavController(RestaurantCardBSFragment.this).navigate(R.id.action_restaurantCardBSFragment_to_dishBSFragment, bundle);
+
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            NavHostFragment.findNavController(RestaurantCardBSFragment.this).navigate(R.id.action_restaurantCardBSFragment_to_dishBSFragment, bundle);
+
+                        }
+                    }, 100);
 
 
                 }

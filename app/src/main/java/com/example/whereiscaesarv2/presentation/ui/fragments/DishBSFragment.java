@@ -38,6 +38,8 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.text.DecimalFormat;
+
 public class DishBSFragment extends Fragment {
 
     @Override
@@ -51,16 +53,26 @@ public class DishBSFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         FragmentDishBSBinding binding = FragmentDishBSBinding.bind(view);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-        bottomSheetBehavior.setPeekHeight(200);
-        bottomSheetBehavior.setHideable(false);
+        bottomSheetBehavior.setPeekHeight(350);
+        bottomSheetBehavior.setHideable(true);
         bottomSheetBehavior.setDraggable(true);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        bottomSheetBehavior.setHideable(false);
         isAuto = false;
+
+        binding.cancelButton.setOnClickListener(v -> {
+            NavHostFragment.findNavController(this).popBackStack();
+        });
 
         MapDishCard mapDishCard = (MapDishCard) getArguments().getSerializable("dishCard");
         String restaurantName = getArguments().getString("restaurantName");
         binding.dishName.setText(mapDishCard.dishName);
-        binding.feedBackCount.setText(mapDishCard.counter.toString());
-        binding.estimation.setText(mapDishCard.estimation.toString());
+        binding.feedBackCount.setText(String.format("Оценок: %s", mapDishCard.counter.toString()));
+
+        double result = (double) mapDishCard.sum / mapDishCard.counter;
+        DecimalFormat decimalFormat = new DecimalFormat("#0.0");
+        String formattedResult = decimalFormat.format(result);
+        binding.estimation.setText(formattedResult);
         DishBSFragmentViewModel vm = new ViewModelProvider(requireActivity(), new DishBSFragmentViewModelFactory()).get(DishBSFragmentViewModel.class);
         vm.getEstimation(restaurantName, mapDishCard.dishName);
         vm.getMutableLiveData().observe(getViewLifecycleOwner(), feedbackModelList -> {

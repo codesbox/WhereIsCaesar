@@ -8,7 +8,7 @@ public class MapDishCard implements Serializable {
     public Integer counter;
     public Integer estimation;
     public String category;
-    Integer sum;
+    public Integer sum;
 
     public MapDishCard(String dishName, String imageUrl, Integer counter, Integer sum, String category) {
         this.dishName = dishName;
