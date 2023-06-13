@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -50,6 +51,8 @@ public class AddFeedbackBSFragment extends Fragment {
         String lastName = getArguments().getString("lastName");
         String id = getArguments().getString("id");
         String userLevel = getArguments().getString("userLevel");
+        binding.dish.setText(dishName);
+        binding.rest.setText(restaurantName);
 
         binding.sendFeedback.setOnClickListener(v -> {
             String feedback = binding.feedback.getText().toString();
@@ -177,7 +180,8 @@ public class AddFeedbackBSFragment extends Fragment {
 
                                                                             documentSnapshotq.getReference().update("dishes", dishesMap)
                                                                                     .addOnSuccessListener(aV -> {
-                                                                                        Toast.makeText(requireContext(), "Все супер!!!", Toast.LENGTH_SHORT).show();
+                                                                                        Toast.makeText(requireContext(), "Отзыв отправлен", Toast.LENGTH_SHORT).show();
+                                                                                        NavHostFragment.findNavController(AddFeedbackBSFragment.this).popBackStack();
                                                                                     })
                                                                                     .addOnFailureListener(e -> {
                                                                                         Toast.makeText(requireContext(), "Ошибка4", Toast.LENGTH_SHORT).show();
@@ -202,7 +206,8 @@ public class AddFeedbackBSFragment extends Fragment {
 
 
 
-                                                Toast.makeText(requireContext(), "Успешно", Toast.LENGTH_SHORT).show();
+                                                //Toast.makeText(requireContext(), "Успешно", Toast.LENGTH_SHORT).show();
+
                                             })
                                             .addOnFailureListener(e -> {
                                                 Toast.makeText(requireContext(), "Ошибка", Toast.LENGTH_SHORT).show();

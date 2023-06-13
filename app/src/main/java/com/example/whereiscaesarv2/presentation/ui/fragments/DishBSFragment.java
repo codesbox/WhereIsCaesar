@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -108,8 +109,7 @@ public class DishBSFragment extends Fragment {
                             bundle.putString("id", accountModelDomain.id);
                             bundle.putString("userLevel", accountModelDomain.feedBackCount.toString());
 
-
-                            NavHostFragment.findNavController(this).navigate(R.id.action_dishBSFragment_to_addFeedbackBSFragment, bundle);
+                            Navigation.findNavController(requireActivity(), R.id.mainFragmentContainerView).navigate(R.id.action_mainMapFragment_to_addFeedbackBSFragment2, bundle);
                             break;
                         case ("m"):
                             Toast.makeText(requireContext(), "Авторизируйтесь под обычным пользователем", Toast.LENGTH_SHORT).show();

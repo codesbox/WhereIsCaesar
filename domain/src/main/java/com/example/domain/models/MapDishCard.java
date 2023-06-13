@@ -15,7 +15,13 @@ public class MapDishCard implements Serializable {
         this.imageUrl = imageUrl;
         this.counter = counter;
         this.sum = sum;
-        this.estimation = this.sum / this.counter;
+        if (sum == 0){
+            this.estimation = 0;
+        }
+        else{
+            this.estimation = this.sum / this.counter;
+        }
+
         this.category = category;
     }
 }

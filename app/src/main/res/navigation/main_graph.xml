@@ -22,6 +22,9 @@
         <action
             android:id="@+id/action_mainMapFragment_to_myRestaurantsFragment2"
             app:destination="@id/myRestaurantsFragment2" />
+        <action
+            android:id="@+id/action_mainMapFragment_to_addFeedbackBSFragment2"
+            app:destination="@id/addFeedbackBSFragment2" />
     </fragment>
     <fragment
         android:id="@+id/categoryBSFragment"
@@ -50,5 +53,25 @@
         android:id="@+id/myRestaurantsFragment2"
         android:name="com.example.whereiscaesarv2.presentation.ui.fragments.MyRestaurantsFragment"
         android:label="fragment_my_restaurants"
-        tools:layout="@layout/fragment_my_restaurants" />
+        tools:layout="@layout/fragment_my_restaurants" >
+        <action
+            android:id="@+id/action_myRestaurantsFragment2_to_myRestaurantCardFragment"
+            app:destination="@id/myRestaurantCardFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addFeedbackBSFragment2"
+        android:name="com.example.whereiscaesarv2.presentation.ui.fragments.AddFeedbackBSFragment"
+        android:label="AddFeedbackBSFragment" />
+    <fragment
+        android:id="@+id/myRestaurantCardFragment"
+        android:name="com.example.whereiscaesarv2.presentation.ui.fragments.MyRestaurantCardFragment"
+        android:label="MyRestaurantCardFragment" >
+        <action
+            android:id="@+id/action_myRestaurantCardFragment_to_addDishFragment"
+            app:destination="@id/addDishFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addDishFragment"
+        android:name="com.example.whereiscaesarv2.presentation.ui.fragments.AddDishFragment"
+        android:label="AddDishFragment" />
 </navigation>

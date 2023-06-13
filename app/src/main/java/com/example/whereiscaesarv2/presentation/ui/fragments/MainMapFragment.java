@@ -84,7 +84,7 @@ public class MainMapFragment extends Fragment {
 
         ImageProvider imageProvider = ImageProvider.fromResource(
                 requireContext(),
-                R.drawable.point4
+                R.drawable.marker
         );
 
         mapView = binding.mapView;

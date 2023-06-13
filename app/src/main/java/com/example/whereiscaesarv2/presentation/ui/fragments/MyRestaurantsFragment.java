@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -46,6 +47,9 @@ public class MyRestaurantsFragment extends Fragment {
         MyRestaurantCardClickListener listener = new MyRestaurantCardClickListener() {
             @Override
             public void onCardClick(String restaurant) {
+                Bundle bundle = new Bundle();
+                bundle.putString("name", restaurant);
+                NavHostFragment.findNavController(MyRestaurantsFragment.this).navigate(R.id.action_myRestaurantsFragment2_to_myRestaurantCardFragment, bundle);
 
             }
         };

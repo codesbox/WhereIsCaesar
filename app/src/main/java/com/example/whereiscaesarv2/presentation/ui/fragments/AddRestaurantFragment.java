@@ -114,7 +114,7 @@ public class AddRestaurantFragment extends Fragment {
             restaurantData.put("geoPoint", location);
 
             // Добавление документа в коллекцию Restaurants
-            restaurantsRef.document(restaurantId)
+            restaurantsRef.document(restaurantName)
                     .set(restaurantData, SetOptions.merge())
                     .addOnSuccessListener(aVoid -> {
                         // Успешное добавление
