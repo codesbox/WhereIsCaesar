@@ -42,6 +42,7 @@ public class SignUpFragment extends Fragment {
         vm = new ViewModelProvider(this, new SignUpViewModelFactory()).get(SignUpViewModel.class);
 
         binding.signUpButton.setOnClickListener(v -> {
+            Toast.makeText(requireContext(), "Ожидайте", Toast.LENGTH_SHORT).show();
 
             String email = binding.email.getText().toString();
             String password = binding.password.getText().toString();

@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.whereiscaesarv2.R;
 import com.example.whereiscaesarv2.databinding.FragmentSignInBinding;
@@ -42,6 +43,7 @@ public class SignInFragment extends Fragment {
 
         mAuth = FirebaseAuth.getInstance();
         binding.signInButton.setOnClickListener(v -> {
+            Toast.makeText(requireContext(), "Ожидайте", Toast.LENGTH_SHORT).show();
 
             String email = binding.email.getText().toString();
             String password = binding.password.getText().toString();

@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".presentation.ui.fragments.account.UserProfileBSFragment"
-    android:background="@drawable/bottom_sheet_bg">
+    android:background="@drawable/bottom_sheet_bg"
+    android:layout_marginTop="50dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout2"
@@ -21,12 +22,12 @@
             android:id="@+id/userName"
             android:layout_width="358dp"
             android:layout_height="51dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="40dp"
             android:text="Здравствуйте, Пользовалеть"
             android:textColor="@color/white"
             android:textSize="26sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.132"
+            app:layout_constraintHorizontal_bias="0.301"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -34,28 +35,40 @@
             android:id="@+id/userCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:text="Критик еды 1 уровня"
             android:textColor="@color/yellow_300"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.033"
+            app:layout_constraintHorizontal_bias="0.068"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/userName" />
+
+        <ImageView
+            android:id="@+id/imageView11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/rectangle_4108"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     <com.google.android.material.card.MaterialCardView
-        app:cardElevation="1dp"
         android:id="@+id/myFeedbacks"
-        android:layout_width="190dp"
-        android:layout_height="79dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="44dp"
-        app:layout_constraintEnd_toStartOf="@+id/materialCardView"
-        app:layout_constraintHorizontal_bias="0.08"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="25dp"
+        android:backgroundTint="@color/white"
+        app:cardElevation="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" >
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -64,9 +77,8 @@
 
 
             <TextView
-                android:id="@+id/textView11"
-                android:layout_width="133dp"
-                android:layout_height="27dp"
+                android:layout_width="wrap_content"
+                android:layout_height="26dp"
                 android:text="Мои отзывы"
                 android:textColor="@color/black_300"
                 android:textSize="20sp"
@@ -74,21 +86,20 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
-        app:cardElevation="1dp"
-        android:id="@+id/materialCardView3"
-        android:layout_width="190dp"
-        android:layout_height="79dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="14dp"
-        app:layout_constraintEnd_toStartOf="@+id/materialCardView"
-        app:layout_constraintHorizontal_bias="0.08"
+        android:id="@+id/signOut"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="25dp"
+        android:backgroundTint="@color/white"
+        app:cardElevation="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/myFeedbacks">
 
@@ -99,41 +110,6 @@
 
 
             <TextView
-                android:id="@+id/textView12"
-                android:layout_width="93dp"
-                android:layout_height="28dp"
-                android:text="Профиль"
-                android:textColor="@color/black_300"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.google.android.material.card.MaterialCardView>
-
-    <com.google.android.material.card.MaterialCardView
-        app:cardElevation="1dp"
-        android:layout_width="match_parent"
-        android:id="@+id/addRes"
-        android:layout_marginEnd="10dp"
-        android:layout_marginStart="10dp"
-        android:layout_height="85dp"
-        android:layout_marginTop="26dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.428"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/materialCardView3" >
-
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-
-            <TextView
-                android:id="@+id/textView14"
                 android:layout_width="wrap_content"
                 android:layout_height="26dp"
                 android:text="Выйти"
@@ -144,38 +120,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.google.android.material.card.MaterialCardView>
-
-    <com.google.android.material.card.MaterialCardView
-        app:cardElevation="1dp"
-        android:id="@+id/materialCardView"
-        android:layout_width="170dp"
-        android:layout_height="170dp"
-        android:layout_marginTop="44dp"
-        android:layout_marginEnd="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" >
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-
-            <TextView
-                android:id="@+id/addFeedback"
-                android:layout_width="92dp"
-                android:layout_height="51dp"
-                android:text="Написать отзыв"
-                android:textColor="@color/black_300"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
     </com.google.android.material.card.MaterialCardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

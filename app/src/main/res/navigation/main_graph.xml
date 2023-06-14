@@ -25,6 +25,9 @@
         <action
             android:id="@+id/action_mainMapFragment_to_addFeedbackBSFragment2"
             app:destination="@id/addFeedbackBSFragment2" />
+        <action
+            android:id="@+id/action_mainMapFragment_to_myFeedbacksFragment2"
+            app:destination="@id/myFeedbacksFragment2" />
     </fragment>
     <fragment
         android:id="@+id/categoryBSFragment"
@@ -74,4 +77,8 @@
         android:id="@+id/addDishFragment"
         android:name="com.example.whereiscaesarv2.presentation.ui.fragments.AddDishFragment"
         android:label="AddDishFragment" />
+    <fragment
+        android:id="@+id/myFeedbacksFragment2"
+        android:name="com.example.whereiscaesarv2.presentation.ui.fragments.MyFeedbacksFragment"
+        android:label="MyFeedbacksFragment" />
 </navigation>

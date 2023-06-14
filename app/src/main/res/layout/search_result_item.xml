@@ -12,7 +12,9 @@
         android:layout_marginLeft="10sp"
         android:layout_marginRight="8sp"
         android:layout_marginTop="8sp"
-        app:cardElevation="1dp">
+        android:layout_marginBottom="10sp"
+        app:cardElevation="5dp"
+        android:backgroundTint="@color/white">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

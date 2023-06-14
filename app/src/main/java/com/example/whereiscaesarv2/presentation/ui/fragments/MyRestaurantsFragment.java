@@ -43,6 +43,9 @@ public class MyRestaurantsFragment extends Fragment {
         FragmentMyRestaurantsBinding binding = FragmentMyRestaurantsBinding.bind(view);
 
         String userid = getArguments().getString("id");
+        binding.goBack.setOnClickListener(v -> {
+            NavHostFragment.findNavController(this).popBackStack();
+        });
 
         MyRestaurantCardClickListener listener = new MyRestaurantCardClickListener() {
             @Override
