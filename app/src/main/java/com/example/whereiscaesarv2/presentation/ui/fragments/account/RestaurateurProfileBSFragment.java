@@ -35,6 +35,9 @@ public class RestaurateurProfileBSFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         FragmentRestaurateurProfileBSBinding binding = FragmentRestaurateurProfileBSBinding.bind(view);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        bottomSheetBehavior.setPeekHeight(0);
+        bottomSheetBehavior.setDraggable(true);
+        bottomSheetBehavior.setHideable(true);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
         isAuto = false;
 
