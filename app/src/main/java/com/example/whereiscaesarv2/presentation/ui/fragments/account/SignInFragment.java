@@ -12,10 +12,13 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.example.whereiscaesarv2.R;
@@ -40,10 +43,34 @@ public class SignInFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         FragmentSignInBinding binding = FragmentSignInBinding.bind(view);
+        binding.signInButton.setEnabled(false);
+
+        TextWatcher textWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                boolean isEmail = binding.email.getText().toString().matches("[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+");
+                boolean isPassword = binding.password.getText().toString().length() >= 6;
+
+                boolean allFieldsFilled = !binding.email.getText().toString().isEmpty() &&
+                        !binding.password.getText().toString().isEmpty() &&
+                        isEmail && isPassword;
+                binding.signInButton.setEnabled(allFieldsFilled);
+
+            }
+            @Override
+            public void afterTextChanged(Editable s) {}
+        };
+
+        binding.email.addTextChangedListener(textWatcher);
+        binding.password.addTextChangedListener(textWatcher);
 
         mAuth = FirebaseAuth.getInstance();
         binding.signInButton.setOnClickListener(v -> {
-            Toast.makeText(requireContext(), "Ожидайте", Toast.LENGTH_SHORT).show();
+            requireActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+            binding.progressBar3.setVisibility(View.VISIBLE);
 
             String email = binding.email.getText().toString();
             String password = binding.password.getText().toString();
@@ -56,10 +83,15 @@ public class SignInFragment extends Fragment {
                                 // Sign in success, update UI with the signed-in user's information
                                 Log.d(TAG, "signInWithEmail:success");
                                 FirebaseUser user = mAuth.getCurrentUser();
+                                binding.progressBar3.setVisibility(View.GONE);
+                                requireActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                                 NavHostFragment.findNavController(SignInFragment.this).navigate(R.id.mainMapFragment);
                             } else {
                                 // If sign in fails, display a message to the user.
                                 Log.w(TAG, "signInWithEmail:failure", task.getException());
+                                binding.progressBar3.setVisibility(View.GONE);
+                                requireActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                                Toast.makeText(requireContext(), "Неправильный логин или пароль", Toast.LENGTH_SHORT).show();
 
                             }
                         }

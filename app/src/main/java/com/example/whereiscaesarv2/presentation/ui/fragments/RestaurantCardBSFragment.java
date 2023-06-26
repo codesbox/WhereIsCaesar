@@ -104,6 +104,33 @@ public class RestaurantCardBSFragment extends Fragment {
                     selects.add(dishCard);
                 }
             }
+            if (selects.size() == 0){
+                binding.selectedCard.setVisibility(View.GONE);
+            }
+            if (desserts.size() == 0){
+                binding.desserts.setVisibility(View.GONE);
+                binding.dessertsRecyclerView.setVisibility(View.GONE);
+            }
+            if (drinks.size() == 0){
+                binding.drinks.setVisibility(View.GONE);
+                binding.drinksRecyclerView.setVisibility(View.GONE);
+            }
+            if (soups.size() == 0){
+                binding.soupsAndBroths.setVisibility(View.GONE);
+                binding.soupsAndBrothsRecyclerView.setVisibility(View.GONE);
+            }
+            if (hotDishes.size() == 0){
+                binding.hotDish.setVisibility(View.GONE);
+                binding.hotDishRecyclerView.setVisibility(View.GONE);
+            }
+            if (salads.size() == 0){
+                binding.saladsAndSnacks.setVisibility(View.GONE);
+                binding.saladsAndSnacksRecyclerView.setVisibility(View.GONE);
+            }
+            if (salads.size() != 0 || hotDishes.size() != 0 || soups.size() != 0 || drinks.size() != 0 || desserts.size() != 0){
+                binding.notDishes.setVisibility(View.GONE);
+            }
+
 
             RestaurantDishCardClickListener listener = new RestaurantDishCardClickListener() {
                 @Override

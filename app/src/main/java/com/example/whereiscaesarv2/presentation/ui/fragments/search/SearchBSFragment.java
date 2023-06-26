@@ -18,6 +18,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
 import com.example.domain.models.DishModelDomain;
 import com.example.whereiscaesarv2.R;
 import com.example.whereiscaesarv2.databinding.FragmentSearchBSBinding;
@@ -121,20 +123,26 @@ public class SearchBSFragment extends Fragment {
             for (DishModelDomain dishModelDomain : dishModelDomainList){
                 dishNames.add(dishModelDomain.title);
             }
-            mapFragmentViewModel.setSelectedDishes(dishNames);
-            isAuto = true;
-            bottomSheetBehavior.setHideable(true);
-            bottomSheetBehavior.setDraggable(true);
-            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+            if (dishNames.size() == 0){
+                Toast.makeText(requireContext(), "Вы не выбрали ни одного блюда", Toast.LENGTH_SHORT).show();
+            }
+            else{
+                mapFragmentViewModel.setSelectedDishes(dishNames);
+                isAuto = true;
+                bottomSheetBehavior.setHideable(true);
+                bottomSheetBehavior.setDraggable(true);
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
 
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    NavHostFragment.findNavController(SearchBSFragment.this).navigate(R.id.action_searchBSFragment_to_restaurantsListFragment);
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        NavHostFragment.findNavController(SearchBSFragment.this).navigate(R.id.action_searchBSFragment_to_restaurantsListFragment);
 
-                }
-            }, 100);
+                    }
+                }, 100);
+            }
+
 
 
 

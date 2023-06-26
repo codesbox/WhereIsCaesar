@@ -3,6 +3,8 @@ package com.example.whereiscaesarv2.presentation.ui.fragments;
 import static com.example.whereiscaesarv2.presentation.app.App.isAuto;
 import static com.example.whereiscaesarv2.presentation.app.App.isMapKitSetApiKey;
 import static com.example.whereiscaesarv2.presentation.app.App.mapContext;
+import static java.lang.Double.NaN;
+
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -39,9 +41,11 @@ import com.yandex.mapkit.map.CameraPosition;
 import com.yandex.mapkit.map.CameraUpdateReason;
 import com.yandex.mapkit.map.Map;
 import com.yandex.mapkit.map.PlacemarkMapObject;
+import com.yandex.mapkit.map.TextStyle;
 import com.yandex.mapkit.mapview.MapView;
 import com.yandex.runtime.image.ImageProvider;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -84,7 +88,7 @@ public class MainMapFragment extends Fragment {
 
         ImageProvider imageProvider = ImageProvider.fromResource(
                 requireContext(),
-                R.drawable.marker
+                R.drawable.point
         );
 
         mapView = binding.mapView;
@@ -143,6 +147,18 @@ public class MainMapFragment extends Fragment {
                         new Point(restaurant.geoPoint.latitude, restaurant.geoPoint.longitude), imageProvider);
                 marker.addTapListener(new MapObjectTapListenerImpl(restaurant, binding.containerBottomSheet, viewModel.getSelectedDishes().getValue()));
                 marker.setDraggable(true);
+                double result;
+                if (restaurant.allSum == 0){
+                    result = 0;
+                }
+                else{
+                    result = (double) restaurant.allSum / restaurant.allCount;
+                }
+                DecimalFormat decimalFormat = new DecimalFormat("#0.0");
+                String formattedResult = decimalFormat.format(result);
+                if (mapView.getMap().getCameraPosition().getZoom() > 9.9){
+                    marker.setText(String.format("%s\n%s\u2605", restaurant.restaurantName, formattedResult), new TextStyle().setPlacement(TextStyle.Placement.RIGHT).setSize(12));
+                }
                 markers.add(marker);
 
 

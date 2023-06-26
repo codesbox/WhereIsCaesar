@@ -8,6 +8,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,6 +20,9 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.data.storages.models.RestaurantModelData;
+import com.example.domain.listeners.DeleteDishListener;
+import com.example.domain.listeners.GetMyRestaurantListener;
+import com.example.domain.models.DishModelDomain;
 import com.example.domain.models.MapDishCard;
 import com.example.domain.models.PointModel;
 import com.example.domain.models.RestaurantModelDomain;
@@ -27,6 +31,10 @@ import com.example.whereiscaesarv2.databinding.FragmentMyRestaurantCardBinding;
 import com.example.whereiscaesarv2.presentation.ui.recycler.MyRestaurantDishesAdapter;
 import com.example.whereiscaesarv2.presentation.ui.recycler.RestaurantDishesAdapter;
 import com.example.whereiscaesarv2.presentation.util.listeners.RestaurantDishCardClickListener;
+import com.example.whereiscaesarv2.presentation.viewModels.viewmodels.MyRestaurantCardFragmentViewModel;
+import com.example.whereiscaesarv2.presentation.viewModels.viewmodels.MyRestaurantCardFragmentViewModelFactory;
+import com.example.whereiscaesarv2.presentation.viewModels.viewmodels.SearchBSFragmentViewModel;
+import com.example.whereiscaesarv2.presentation.viewModels.viewmodels.SearchBSFragmentViewModelFactory;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -62,6 +70,8 @@ public class MyRestaurantCardFragment extends Fragment {
 
         FragmentMyRestaurantCardBinding binding = FragmentMyRestaurantCardBinding.bind(view);
 
+        MyRestaurantCardFragmentViewModel viewModel = new ViewModelProvider(this, new MyRestaurantCardFragmentViewModelFactory()).get(MyRestaurantCardFragmentViewModel.class);
+
         String name = getArguments().getString("name");
         binding.restaurantName.setText(name);
         binding.goBack.setOnClickListener(v -> {
@@ -77,119 +87,91 @@ public class MyRestaurantCardFragment extends Fragment {
             NavHostFragment.findNavController(this).navigate(R.id.action_myRestaurantCardFragment_to_addDishFragment, bundle);
         });
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        CollectionReference restaurantsRef = db.collection("Restaurants");
+        DeleteDishListener deleteDishListener = new DeleteDishListener() {
+            @Override
+            public void onSuccess() {
+                Toast.makeText(requireContext(), "Блюдо удалено", Toast.LENGTH_SHORT).show();
 
-        restaurantsRef
-                .whereEqualTo("name", name)
-                .whereEqualTo("mainPoint", true)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot documentSnapshot = task.getResult().getDocuments().get(0);
-                            String documentId = documentSnapshot.getId();
+            }
 
-                            String json = new Gson().toJson(documentSnapshot.get("dishes"));
-                            Type type = new TypeToken<Map<String, Object>>(){}.getType();
-                            List<String> nnn = (List<String>) documentSnapshot.get("dishesNames");
+            @Override
+            public void onFailure() {
+                Toast.makeText(requireContext(), "Неизвестная ошибка", Toast.LENGTH_SHORT).show();
+            }
+        };
 
-                            Map<String, Object> dishesMap = new Gson().fromJson(json, type);
+        RestaurantDishCardClickListener listener = new RestaurantDishCardClickListener() {
+            @Override
+            public void onCardClick(MapDishCard mapDishCard) {
+                viewModel.deleteDish(new DishModelDomain(mapDishCard.dishName, mapDishCard.imageUrl, true), name, deleteDishListener);
+            }
+        };
 
-                            List<MapDishCard> dishMapList = new ArrayList<>();
+        MyRestaurantDishesAdapter hotadapter = new MyRestaurantDishesAdapter(getContext(), listener);
+        RecyclerView hotrecyclerView = binding.hotDishRecyclerView;
+        hotrecyclerView.setAdapter(hotadapter);
+        hotrecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-                            for (Map.Entry<String, Object> entry : dishesMap.entrySet()){
-                                Map<String, Object> dishValueMap = (Map<String, Object>) entry.getValue();
-                                dishMapList.add(new MapDishCard(entry.getKey(), (String) dishValueMap.get("imageUrl"), ((Double) dishValueMap.get("count")).intValue(), ((Double) dishValueMap.get("sum")).intValue(), (String) dishValueMap.get("category")));
-                            }
+        MyRestaurantDishesAdapter salatsadapter = new MyRestaurantDishesAdapter(getContext(), listener);
+        RecyclerView salatrecyclerView = binding.saladsAndSnacksRecyclerView;
+        salatrecyclerView.setAdapter(salatsadapter);
+        salatrecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-                            List<MapDishCard> salads = new ArrayList<>();
-                            List<MapDishCard> hotDishes = new ArrayList<>();
-                            List<MapDishCard> soups = new ArrayList<>();
-                            List<MapDishCard> drinks = new ArrayList<>();
-                            List<MapDishCard> desserts = new ArrayList<>();
-                            for (MapDishCard dishCard : dishMapList){
-                                if (dishCard.category.equals("Горячие блюда")){
-                                    hotDishes.add(dishCard);
-                                }
-                                if (dishCard.category.equals("Салаты и закуски")){
-                                    salads.add(dishCard);
-                                }
-                                if (dishCard.category.equals("Десерты и выпечка")){
-                                    desserts.add(dishCard);
-                                }
-                                if (dishCard.category.equals("Напитки")){
-                                    drinks.add(dishCard);
-                                }
-                                if (dishCard.category.equals("Супы и бульоны")){
-                                    soups.add(dishCard);
-                                }
-                            }
+        MyRestaurantDishesAdapter dessertadapter = new MyRestaurantDishesAdapter(getContext(), listener);
+        RecyclerView dessertsrecyclerView = binding.dessertsRecyclerView;
+        dessertsrecyclerView.setAdapter(dessertadapter);
+        dessertsrecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-                            RestaurantDishCardClickListener listener = new RestaurantDishCardClickListener() {
-                                @Override
-                                public void onCardClick(MapDishCard mapDishCard) {
+        MyRestaurantDishesAdapter drinksadapter = new MyRestaurantDishesAdapter(getContext(), listener);
+        RecyclerView drinkrecyclerView = binding.drinksRecyclerView;
+        drinkrecyclerView.setAdapter(drinksadapter);
+        drinkrecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        MyRestaurantDishesAdapter soupsadapter = new MyRestaurantDishesAdapter(getContext(), listener);
+        RecyclerView souprecyclerView = binding.soupsAndBrothsRecyclerView;
+        souprecyclerView.setAdapter(soupsadapter);
+        souprecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-                                        dishesMap.remove(mapDishCard.dishName);
-                                        nnn.remove("солянка");
+        GetMyRestaurantListener getMyRestaurantListener = new GetMyRestaurantListener() {
+            @Override
+            public void onSuccess(RestaurantModelDomain restaurantModelDomain) {
 
-
-                                        restaurantsRef.document(documentId).update("dishes", dishesMap, "dishesNames", nnn).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                            @Override
-                                            public void onSuccess(Void unused) {
-                                                Toast.makeText(requireContext(), "Блюдо удалено", Toast.LENGTH_SHORT).show();
-                                            }
-                                        }).addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-                                                Toast.makeText(requireContext(), "Ошибка", Toast.LENGTH_SHORT).show();
-                                            }
-                                        });
-
-
-                                }
-                            };
-
-
-
-                            MyRestaurantDishesAdapter hotadapter = new MyRestaurantDishesAdapter(getContext(), listener);
-                            RecyclerView hotrecyclerView = binding.hotDishRecyclerView;
-                            hotrecyclerView.setAdapter(hotadapter);
-                            hotrecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-                            MyRestaurantDishesAdapter salatsadapter = new MyRestaurantDishesAdapter(getContext(), listener);
-                            RecyclerView salatrecyclerView = binding.saladsAndSnacksRecyclerView;
-                            salatrecyclerView.setAdapter(salatsadapter);
-                            salatrecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-                            MyRestaurantDishesAdapter dessertadapter = new MyRestaurantDishesAdapter(getContext(), listener);
-                            RecyclerView dessertsrecyclerView = binding.dessertsRecyclerView;
-                            dessertsrecyclerView.setAdapter(dessertadapter);
-                            dessertsrecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-                            MyRestaurantDishesAdapter drinksadapter = new MyRestaurantDishesAdapter(getContext(), listener);
-                            RecyclerView drinkrecyclerView = binding.drinksRecyclerView;
-                            drinkrecyclerView.setAdapter(drinksadapter);
-                            drinkrecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-                            MyRestaurantDishesAdapter soupsadapter = new MyRestaurantDishesAdapter(getContext(), listener);
-                            RecyclerView souprecyclerView = binding.soupsAndBrothsRecyclerView;
-                            souprecyclerView.setAdapter(soupsadapter);
-                            souprecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-                            hotadapter.setItemList(hotDishes);
-                            salatsadapter.setItemList(salads);
-                            dessertadapter.setItemList(desserts);
-                            drinksadapter.setItemList(drinks);
-                            soupsadapter.setItemList(soups);
-
-
-                        } else {
-                            Log.d(TAG, "Ошибка получения документов: ", task.getException());
-                        }
+                List<MapDishCard> salads = new ArrayList<>();
+                List<MapDishCard> hotDishes = new ArrayList<>();
+                List<MapDishCard> soups = new ArrayList<>();
+                List<MapDishCard> drinks = new ArrayList<>();
+                List<MapDishCard> desserts = new ArrayList<>();
+                for (MapDishCard dishCard : restaurantModelDomain.dishNameList){
+                    if (dishCard.category.equals("Горячие блюда")){
+                        hotDishes.add(dishCard);
                     }
-                });
+                    if (dishCard.category.equals("Салаты и закуски")){
+                        salads.add(dishCard);
+                    }
+                    if (dishCard.category.equals("Десерты и выпечка")){
+                        desserts.add(dishCard);
+                    }
+                    if (dishCard.category.equals("Напитки")){
+                        drinks.add(dishCard);
+                    }
+                    if (dishCard.category.equals("Супы и бульоны")){
+                        soups.add(dishCard);
+                    }
+                }
+                hotadapter.setItemList(hotDishes);
+                salatsadapter.setItemList(salads);
+                dessertadapter.setItemList(desserts);
+                drinksadapter.setItemList(drinks);
+                soupsadapter.setItemList(soups);
+
+            }
+
+            @Override
+            public void onFailure() {
+                Toast.makeText(requireContext(), "Неизвестная ошибка", Toast.LENGTH_SHORT).show();
+            }
+        };
+
+        viewModel.getRestaurant(name, getMyRestaurantListener);
     }
 }
