@@ -1,6 +1,7 @@
 package com.example.data.storages.firebase;
 
 import com.example.domain.listeners.GetMyRestaurantsListener;
+import com.example.domain.models.MyRestaurantsModel;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -15,14 +16,13 @@ public class GetMyRestaurantsStorageImpl implements GetMyRestaurantsStorage{
     @Override
     public void getMyRestaurants(String userId, GetMyRestaurantsListener listener) {
 
-        List<String> restaurantsList = new ArrayList<>();
+        List<MyRestaurantsModel> restaurantsList = new ArrayList<>();
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         CollectionReference restaurantsRef = db.collection("Restaurants");
 
-        Query query = restaurantsRef.whereEqualTo("userId", userId)
-                .whereEqualTo("mainPoint", true);
+        Query query = restaurantsRef.whereEqualTo("userId", userId);
 
         query.get()
                 .addOnCompleteListener(task -> {
@@ -31,7 +31,7 @@ public class GetMyRestaurantsStorageImpl implements GetMyRestaurantsStorage{
                         if (querySnapshot != null) {
                             for (QueryDocumentSnapshot document : querySnapshot) {
 
-                                restaurantsList.add(document.getString("name"));
+                                restaurantsList.add(new MyRestaurantsModel(document.getString("name"), document.getId()));
 
                             }
                             listener.onSuccess(restaurantsList);

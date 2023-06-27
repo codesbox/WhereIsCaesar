@@ -21,6 +21,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.common.reflect.TypeToken;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -39,8 +40,7 @@ public class GetMyRestaurantStorageImpl implements GetMyRestaurantStorage{
         CollectionReference restaurantsRef = db.collection("Restaurants");
 
         restaurantsRef
-                .whereEqualTo("name", restaurantName)
-                .whereEqualTo("mainPoint", true)
+                .whereEqualTo(FieldPath.documentId(), restaurantName)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -48,8 +48,8 @@ public class GetMyRestaurantStorageImpl implements GetMyRestaurantStorage{
                         if (task.isSuccessful()) {
                             DocumentSnapshot documentSnapshot = task.getResult().getDocuments().get(0);
                             GeoPoint geoPoint = documentSnapshot.getGeoPoint("geoPoint");
-                            double latitude = geoPoint.getLatitude();
-                            double longitude = geoPoint.getLongitude();
+                            double latitude = 0;
+                            double longitude = 0;
 
                             PointModel point = new PointModel(latitude, longitude);
 
@@ -71,12 +71,14 @@ public class GetMyRestaurantStorageImpl implements GetMyRestaurantStorage{
 
                             String userId = documentSnapshot.getString("userId");
                             String restaurantName = documentSnapshot.getString("name");
+                            String address = documentSnapshot.getString("address");
+                            String restaurantId = documentSnapshot.getId();
 
                             RestaurantModelData restaurantModelData = new RestaurantModelData(restaurantName,
-                                    userId ,allSum, allCount, point, dishMapList);
+                                    userId ,allSum, allCount, point, dishMapList, address, restaurantId);
                             RestaurantModelDomain restaurantModelDomain = new RestaurantModelDomain(restaurantModelData.restaurantName,
                                     restaurantModelData.userId, restaurantModelData.allSum, restaurantModelData.allCount,
-                                    restaurantModelData.geoPoint, restaurantModelData.dishNameList);
+                                    restaurantModelData.geoPoint, restaurantModelData.dishNameList, restaurantModelData.address, restaurantModelData.restaurantId);
                             listener.onSuccess(restaurantModelDomain);
                         }
                         else {

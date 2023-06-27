@@ -73,6 +73,7 @@ public class MyRestaurantCardFragment extends Fragment {
         MyRestaurantCardFragmentViewModel viewModel = new ViewModelProvider(this, new MyRestaurantCardFragmentViewModelFactory()).get(MyRestaurantCardFragmentViewModel.class);
 
         String name = getArguments().getString("name");
+        String restaurantId = getArguments().getString("id");
         binding.restaurantName.setText(name);
         binding.goBack.setOnClickListener(v -> {
 
@@ -82,7 +83,7 @@ public class MyRestaurantCardFragment extends Fragment {
         binding.addDishBut.setOnClickListener(v -> {
 
             Bundle bundle = new Bundle();
-            bundle.putString("restaurantName", name);
+            bundle.putString("restaurantName", restaurantId);
 
             NavHostFragment.findNavController(this).navigate(R.id.action_myRestaurantCardFragment_to_addDishFragment, bundle);
         });
@@ -172,6 +173,6 @@ public class MyRestaurantCardFragment extends Fragment {
             }
         };
 
-        viewModel.getRestaurant(name, getMyRestaurantListener);
+        viewModel.getRestaurant(restaurantId, getMyRestaurantListener);
     }
 }

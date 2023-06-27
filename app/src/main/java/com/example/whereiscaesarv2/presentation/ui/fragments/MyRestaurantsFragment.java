@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.domain.listeners.GetMyRestaurantsListener;
+import com.example.domain.models.MyRestaurantsModel;
 import com.example.whereiscaesarv2.R;
 import com.example.whereiscaesarv2.databinding.FragmentMyRestaurantsBinding;
 import com.example.whereiscaesarv2.presentation.ui.recycler.MyRestaurantsAdapter;
@@ -56,9 +57,10 @@ public class MyRestaurantsFragment extends Fragment {
 
         MyRestaurantCardClickListener listener = new MyRestaurantCardClickListener() {
             @Override
-            public void onCardClick(String restaurant) {
+            public void onCardClick(MyRestaurantsModel restaurant) {
                 Bundle bundle = new Bundle();
-                bundle.putString("name", restaurant);
+                bundle.putString("name", restaurant.restaurantName);
+                bundle.putString("id", restaurant.restaurantId);
                 NavHostFragment.findNavController(MyRestaurantsFragment.this).navigate(R.id.action_myRestaurantsFragment2_to_myRestaurantCardFragment, bundle);
 
             }
@@ -72,7 +74,7 @@ public class MyRestaurantsFragment extends Fragment {
 
         GetMyRestaurantsListener getMyRestaurantsListener = new GetMyRestaurantsListener() {
             @Override
-            public void onSuccess(List<String> restaurantsList) {
+            public void onSuccess(List<MyRestaurantsModel> restaurantsList) {
                 adapter.setRestaurants(restaurantsList);
             }
 

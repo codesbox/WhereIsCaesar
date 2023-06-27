@@ -1,6 +1,8 @@
 package com.example.whereiscaesarv2.presentation.util.listeners;
 
+import com.example.domain.models.MyRestaurantsModel;
+
 public interface MyRestaurantCardClickListener {
 
-    void onCardClick(String restaurant);
+    void onCardClick(MyRestaurantsModel restaurant);
 }

@@ -67,6 +67,7 @@ public class RestaurantCardBSFragment extends Fragment {
         vm.getRestaurant().observe(getViewLifecycleOwner(), restaurantModelDomain -> {
 
             binding.restaurantName.setText(restaurantModelDomain.restaurantName);
+            binding.textView10.setText(restaurantModelDomain.address);
             if (restaurantModelDomain.allSum == 0.0){
                 binding.imageView3.setText("0.0");
             }
@@ -142,6 +143,7 @@ public class RestaurantCardBSFragment extends Fragment {
                     bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
                     Bundle bundle = new Bundle();
                     bundle.putString("restaurantName", vm.getRestaurant().getValue().restaurantName);
+                    bundle.putString("restaurantId", vm.getRestaurant().getValue().restaurantId);
                     bundle.putSerializable("dishCard", mapDishCard);
 
                     Handler handler = new Handler();

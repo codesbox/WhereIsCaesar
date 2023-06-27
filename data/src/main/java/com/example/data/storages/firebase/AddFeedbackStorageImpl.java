@@ -25,7 +25,7 @@ import java.util.Map;
 public class AddFeedbackStorageImpl implements AddFeedbackStorage{
 
     @Override
-    public void addFeedBack(AddFeedbackListener listener, String id, String dishName, String feedback, String restaurantName, Integer estimation) {
+    public void addFeedBack(AddFeedbackListener listener, String id, String dishName, String feedback, String restaurantName, Integer estimation, String restaurantId) {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference usersRef = db.collection("Users");
@@ -57,6 +57,7 @@ public class AddFeedbackStorageImpl implements AddFeedbackStorage{
                                 data.put("firstName", firstName);
                                 data.put("lastName", lastName);
                                 data.put("userLevel", level);
+                                data.put("restaurantId", restaurantId);
 
 
                                 newDocumentRef.set(data)
@@ -106,7 +107,7 @@ public class AddFeedbackStorageImpl implements AddFeedbackStorage{
                                                         CollectionReference restaurantsCollection = db.collection("Restaurants");
 
 
-                                                        restaurantsCollection.document(restaurantName)
+                                                        restaurantsCollection.document(restaurantId)
                                                                 .get()
                                                                 .addOnSuccessListener(documentSnapshotq -> {
                                                                     if (documentSnapshotq.exists()) {

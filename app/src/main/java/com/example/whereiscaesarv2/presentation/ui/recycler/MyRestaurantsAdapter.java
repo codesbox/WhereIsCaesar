@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.domain.models.MapDishCard;
+import com.example.domain.models.MyRestaurantsModel;
 import com.example.whereiscaesarv2.databinding.MyRestaurantCardRecyclerBinding;
 import com.example.whereiscaesarv2.presentation.util.listeners.MyRestaurantCardClickListener;
 import com.example.whereiscaesarv2.presentation.util.listeners.RestaurantDishCardClickListener;
@@ -18,7 +19,7 @@ import java.util.List;
 public class MyRestaurantsAdapter extends RecyclerView.Adapter<MyRestaurantsAdapter.ViewHolder> {
     private android.content.Context context;
     MyRestaurantCardClickListener listener;
-    private List<String> restaurants = new ArrayList<>();
+    private List<MyRestaurantsModel> restaurants = new ArrayList<>();
     public MyRestaurantsAdapter(android.content.Context context, MyRestaurantCardClickListener listener) {
         this.context = context;
         this.listener = listener;
@@ -45,7 +46,7 @@ public class MyRestaurantsAdapter extends RecyclerView.Adapter<MyRestaurantsAdap
 
 
     @SuppressLint("NotifyDataSetChanged")
-    public void setRestaurants(List<String>  mapDishCardList){
+    public void setRestaurants(List<MyRestaurantsModel>  mapDishCardList){
         this.restaurants = mapDishCardList;
         notifyDataSetChanged();
     }
@@ -61,9 +62,9 @@ public class MyRestaurantsAdapter extends RecyclerView.Adapter<MyRestaurantsAdap
             this.context = context;
             this.listener = listener;
         }
-        public void bind(String restaurant){
+        public void bind(MyRestaurantsModel restaurant){
             binding.cardView.setOnClickListener(v -> {listener.onCardClick(restaurant);});
-            binding.name.setText(restaurant);
+            binding.name.setText(restaurant.restaurantName);
         }
     }
 }

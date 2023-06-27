@@ -59,6 +59,7 @@ public class AddFeedbackBSFragment extends Fragment {
         String lastName = getArguments().getString("lastName");
         String id = getArguments().getString("id");
         String userLevel = getArguments().getString("userLevel");
+        String restaurantId = getArguments().getString("restaurantId");
         binding.dish.setText(dishName);
         binding.rest.setText(restaurantName);
 
@@ -78,7 +79,7 @@ public class AddFeedbackBSFragment extends Fragment {
         binding.sendFeedback.setOnClickListener(v -> {
             String feedback = binding.feedback.getText().toString();
             Integer estimation = Integer.valueOf(binding.estimation.getText().toString());
-            viewModel.addFeedback(addFeedbackListener, id, dishName, feedback, restaurantName, estimation);
+            viewModel.addFeedback(addFeedbackListener, id, dishName, feedback, restaurantName, estimation, restaurantId);
 
 
 

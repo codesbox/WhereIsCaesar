@@ -24,7 +24,7 @@ public class MyFeedbacksRepositoryImpl implements MyFeedbacksRepository {
     }
 
     @Override
-    public void addFeedback(AddFeedbackListener listener, String id, String dishName, String feedback, String restaurantName, Integer estimation) {
-        addFeedbackStorage.addFeedBack(listener, id, dishName, feedback, restaurantName, estimation);
+    public void addFeedback(AddFeedbackListener listener, String id, String dishName, String feedback, String restaurantName, Integer estimation, String restaurantId) {
+        addFeedbackStorage.addFeedBack(listener, id, dishName, feedback, restaurantName, estimation, restaurantId);
     }
 }

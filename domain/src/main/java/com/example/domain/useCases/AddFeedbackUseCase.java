@@ -12,7 +12,7 @@ public class AddFeedbackUseCase {
 
     }
 
-    public void execute(AddFeedbackListener listener, String id, String dishName, String feedback, String restaurantName, Integer estimation){
-        repository.addFeedback(listener, id, dishName, feedback, restaurantName, estimation);
+    public void execute(AddFeedbackListener listener, String id, String dishName, String feedback, String restaurantName, Integer estimation, String restaurantId){
+        repository.addFeedback(listener, id, dishName, feedback, restaurantName, estimation, restaurantId);
     }
 }

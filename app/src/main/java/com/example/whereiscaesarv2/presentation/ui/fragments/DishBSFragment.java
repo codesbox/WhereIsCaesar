@@ -67,6 +67,7 @@ public class DishBSFragment extends Fragment {
 
         MapDishCard mapDishCard = (MapDishCard) getArguments().getSerializable("dishCard");
         String restaurantName = getArguments().getString("restaurantName");
+        String restaurantId = getArguments().getString("restaurantId");
         binding.dishName.setText(mapDishCard.dishName);
         binding.feedBackCount.setText(String.format("Оценок: %s", mapDishCard.counter.toString()));
 
@@ -75,7 +76,7 @@ public class DishBSFragment extends Fragment {
         String formattedResult = decimalFormat.format(result);
         binding.estimation.setText(formattedResult);
         DishBSFragmentViewModel vm = new ViewModelProvider(requireActivity(), new DishBSFragmentViewModelFactory()).get(DishBSFragmentViewModel.class);
-        vm.getEstimation(restaurantName, mapDishCard.dishName);
+        vm.getEstimation(restaurantId, mapDishCard.dishName);
         vm.getMutableLiveData().observe(getViewLifecycleOwner(), feedbackModelList -> {
 
             DishFeedbackAdapter feedbackadapter = new DishFeedbackAdapter(getContext());
@@ -107,6 +108,7 @@ public class DishBSFragment extends Fragment {
                             bundle.putString("firstName", accountModelDomain.firstName);
                             bundle.putString("lastName", accountModelDomain.lastName);
                             bundle.putString("id", accountModelDomain.id);
+                            bundle.putString("restaurantId", restaurantId);
                             bundle.putString("userLevel", accountModelDomain.feedBackCount.toString());
 
                             Navigation.findNavController(requireActivity(), R.id.mainFragmentContainerView).navigate(R.id.action_mainMapFragment_to_addFeedbackBSFragment2, bundle);

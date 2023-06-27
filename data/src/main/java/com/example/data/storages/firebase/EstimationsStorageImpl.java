@@ -30,7 +30,7 @@ public class EstimationsStorageImpl implements EstimationsStorage{
         CollectionReference feedbacksRef = db.collection("Feedbacks");
 
         feedbacksRef.whereEqualTo("dishName", dishName)
-                .whereEqualTo("restaurantName", restaurantName)
+                .whereEqualTo("restaurantId", restaurantName)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override

@@ -6,6 +6,7 @@ import android.graphics.Point;
 import android.util.Log;
 
 import com.example.data.storages.models.RestaurantModelData;
+import com.example.data.storages.models.RestaurantPoint;
 import com.example.domain.listeners.GetRestaurantsListener;
 import com.example.domain.models.DishModelDomain;
 import com.example.domain.models.MapDishCard;
@@ -16,6 +17,7 @@ import com.google.android.gms.tasks.Tasks;
 import com.google.common.reflect.TypeToken;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
@@ -26,6 +28,7 @@ import com.google.gson.Gson;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -40,14 +43,11 @@ public class RestaurantsStorageImpl implements RestaurantsStorage{
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        CollectionReference restaurantsRef = db.collection("Restaurants");
+        CollectionReference restaurantsRef = db.collection("RestaurantsPoints");
 
         List<Task<QuerySnapshot>> tasks = new ArrayList<>();
 
-        for (String value : dishList) {
-            Task<QuerySnapshot> task1 = restaurantsRef.whereArrayContains("dishesNames", value).get();
-            tasks.add(task1);
-        }
+
 
         Query query = restaurantsRef.whereLessThan("latitude", topLeftPoint.latitude)
                 .whereGreaterThan("latitude", bottomRightPoint.latitude);
@@ -70,6 +70,7 @@ public class RestaurantsStorageImpl implements RestaurantsStorage{
                 QuerySnapshot firstQuerySnapshot = (QuerySnapshot) results.get(0);
                 combinedResults.addAll(firstQuerySnapshot.getDocuments());
 
+
                 for (int i = 1; i < results.size(); i++) {
                     QuerySnapshot currentQuerySnapshot = (QuerySnapshot) results.get(i);
                     List<DocumentSnapshot> tempList = new ArrayList<>(currentQuerySnapshot.getDocuments());
@@ -85,48 +86,159 @@ public class RestaurantsStorageImpl implements RestaurantsStorage{
 
                 List<RestaurantModelData> restaurantModelDataList = new ArrayList<>();
 
+                Map<String, RestaurantPoint> pointsList = new HashMap<>();
+                List<String> restaurantsId = new ArrayList<>();
+
+
                 for (DocumentSnapshot documentSnapshot : combinedResults){
+
 
 
                     GeoPoint geoPoint = documentSnapshot.getGeoPoint("geoPoint");
                     double latitude = geoPoint.getLatitude();
                     double longitude = geoPoint.getLongitude();
-
                     PointModel point = new PointModel(latitude, longitude);
 
-                    String json = new Gson().toJson(documentSnapshot.get("dishes"));
-                    Type type = new TypeToken<Map<String, Object>>(){}.getType();
+                    String restaurantId = documentSnapshot.getString("restaurantId");
+                    String address = documentSnapshot.getString("address");
 
-                    Map<String, Object> dishesMap = new Gson().fromJson(json, type);
+                    pointsList.put(restaurantId, new RestaurantPoint(address, point));
+                    restaurantsId.add(restaurantId);
 
-                    List<MapDishCard> dishMapList = new ArrayList<>();
 
-                    for (Map.Entry<String, Object> entry : dishesMap.entrySet()){
-                        Map<String, Object> dishValueMap = (Map<String, Object>) entry.getValue();
-                        dishMapList.add(new MapDishCard(entry.getKey(), (String) dishValueMap.get("imageUrl"), ((Double) dishValueMap.get("count")).intValue(), ((Double) dishValueMap.get("sum")).intValue(), (String) dishValueMap.get("category")));
+
+                }
+
+
+                if (!restaurantsId.isEmpty()){
+
+                    FirebaseFirestore db2 = FirebaseFirestore.getInstance();
+
+
+                    CollectionReference restaurantsRef2 = db2.collection("Restaurants");
+
+                    List<Task<QuerySnapshot>> tasks2 = new ArrayList<>();
+
+                    for (String value : dishList) {
+                        Task<QuerySnapshot> task10 = restaurantsRef2.whereArrayContains("dishesNames", value).get();
+                        tasks2.add(task10);
                     }
 
-                    Integer allSum = documentSnapshot.getDouble("allSum").intValue();
+                    Log.d("GHGHGHGHGHGHGHGHGG", String.valueOf(restaurantsId.size()));
 
-                    Integer allCount = documentSnapshot.getDouble("allCount").intValue();
+                    Query query5 = restaurantsRef2.whereIn(FieldPath.documentId(), restaurantsId);
+                    Task<QuerySnapshot> task20 = query5.get();
+                    tasks2.add(task20);
 
-                    String userId = documentSnapshot.getString("userId");
-                    String restaurantName = documentSnapshot.getString("name");
 
-                    RestaurantModelData restaurantModelData = new RestaurantModelData(restaurantName,
-                            userId ,allSum, allCount, point, dishMapList);
-                    restaurantModelDataList.add(restaurantModelData);
+                    Tasks.whenAllSuccess(tasks2).addOnCompleteListener(task3 -> {
+
+
+                        if (task3.isSuccessful()){
+
+
+                            List<Object> resultsq = task3.getResult();
+
+                            List<DocumentSnapshot> combinedResultsq = new ArrayList<>();
+
+                            QuerySnapshot firstQuerySnapshotq = (QuerySnapshot) resultsq.get(0);
+                            combinedResultsq.addAll(firstQuerySnapshotq.getDocuments());
+
+                            for (int i = 1; i < resultsq.size(); i++) {
+                                QuerySnapshot currentQuerySnapshot = (QuerySnapshot) resultsq.get(i);
+                                List<DocumentSnapshot> tempList = new ArrayList<>(currentQuerySnapshot.getDocuments());
+
+                                for (int j = combinedResultsq.size() - 1; j >= 0; j--) {
+                                    DocumentSnapshot documentSnapshot = combinedResultsq.get(j);
+
+                                    if (!tempList.contains(documentSnapshot)) {
+                                        combinedResultsq.remove(j);
+                                    }
+                                }
+                            }
+
+
+                            for (DocumentSnapshot documentSnapshot : combinedResultsq){
+
+                                String documentId = documentSnapshot.getId();
+
+
+                                String json = new Gson().toJson(documentSnapshot.get("dishes"));
+                                Type type = new TypeToken<Map<String, Object>>(){}.getType();
+
+                                Map<String, Object> dishesMap = new Gson().fromJson(json, type);
+
+                                List<MapDishCard> dishMapList = new ArrayList<>();
+
+                                for (Map.Entry<String, Object> entry : dishesMap.entrySet()){
+                                    Map<String, Object> dishValueMap = (Map<String, Object>) entry.getValue();
+                                    dishMapList.add(new MapDishCard(entry.getKey(), (String) dishValueMap.get("imageUrl"), ((Double) dishValueMap.get("count")).intValue(), ((Double) dishValueMap.get("sum")).intValue(), (String) dishValueMap.get("category")));
+                                }
+
+                                Integer allSum = documentSnapshot.getDouble("allSum").intValue();
+
+                                Integer allCount = documentSnapshot.getDouble("allCount").intValue();
+
+                                String userId = documentSnapshot.getString("userId");
+                                String restaurantName = documentSnapshot.getString("name");
+                                PointModel pointModel = new PointModel(pointsList.get(documentId).pointModel.latitude, pointsList.get(documentId).pointModel.longitude);
+                                String restaurantId = documentSnapshot.getId();
+
+                                RestaurantModelData restaurantModelData = new RestaurantModelData(restaurantName,
+                                        userId ,allSum, allCount, pointModel, dishMapList, pointsList.get(documentId).address, restaurantId);
+                                restaurantModelDataList.add(restaurantModelData);
+
+
+
+
+
+                            }
+
+                            List<RestaurantModelDomain> restaurantModelDomainList = new ArrayList<>();
+                            for (RestaurantModelData restaurantModelData : restaurantModelDataList){
+
+                                restaurantModelDomainList.add(new RestaurantModelDomain(restaurantModelData.restaurantName,
+                                        restaurantModelData.userId, restaurantModelData.allSum, restaurantModelData.allCount, restaurantModelData.geoPoint,
+                                        restaurantModelData.dishNameList, restaurantModelData.address, restaurantModelData.restaurantId));
+
+                            }
+                            listener.getRestaurants(restaurantModelDomainList);
+
+
+
+
+
+                        }else{
+
+
+                        }
+
+
+
+
+
+
+
+
+
+                    });
+
+                }
+                else{
+                    List<RestaurantModelDomain> restaurantModelDomainList = new ArrayList<>();
+                    listener.getRestaurants(restaurantModelDomainList);
                 }
 
-                List<RestaurantModelDomain> restaurantModelDomainList = new ArrayList<>();
-                for (RestaurantModelData restaurantModelData : restaurantModelDataList){
 
-                    restaurantModelDomainList.add(new RestaurantModelDomain(restaurantModelData.restaurantName,
-                            restaurantModelData.userId, restaurantModelData.allSum, restaurantModelData.allCount, restaurantModelData.geoPoint,
-                            restaurantModelData.dishNameList));
 
-                }
-                listener.getRestaurants(restaurantModelDomainList);
+
+
+
+
+
+
+
+
             }
             else{
                 Log.w(DATABASE_ERROR, "RestaurantsStorageImpl");

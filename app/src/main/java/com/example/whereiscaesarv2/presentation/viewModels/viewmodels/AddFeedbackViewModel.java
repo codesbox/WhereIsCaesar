@@ -15,7 +15,7 @@ public class AddFeedbackViewModel extends ViewModel {
 
     }
 
-    public void addFeedback(AddFeedbackListener listener, String id, String dishName, String feedback, String restaurantName, Integer estimation){
-        useCase.execute(listener, id, dishName, feedback, restaurantName, estimation);
+    public void addFeedback(AddFeedbackListener listener, String id, String dishName, String feedback, String restaurantName, Integer estimation, String restaurantId){
+        useCase.execute(listener, id, dishName, feedback, restaurantName, estimation, restaurantId);
     }
 }
