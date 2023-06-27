@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.whereiscaesarv2.databinding.MyFeedbackCardBinding;
-import com.example.whereiscaesarv2.presentation.util.listeners.MyFeedback;
+import com.example.domain.models.MyFeedback;
 
 import java.util.ArrayList;
 import java.util.List;

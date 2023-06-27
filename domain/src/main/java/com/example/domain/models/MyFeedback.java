@@ -1,4 +1,4 @@
-package com.example.whereiscaesarv2.presentation.util.listeners;
+package com.example.domain.models;
 
 public class MyFeedback {
     public String restaurantName;

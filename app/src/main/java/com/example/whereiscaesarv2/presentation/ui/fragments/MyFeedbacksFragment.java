@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,11 +14,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.example.domain.listeners.GetMyFeedbacksListener;
 import com.example.whereiscaesarv2.R;
 import com.example.whereiscaesarv2.databinding.FragmentMyFeedbacksBinding;
 import com.example.whereiscaesarv2.presentation.ui.recycler.MyFeedbackAdapter;
-import com.example.whereiscaesarv2.presentation.util.listeners.MyFeedback;
+import com.example.domain.models.MyFeedback;
+import com.example.whereiscaesarv2.presentation.viewModels.viewmodels.MyFeedbacksViewModel;
+import com.example.whereiscaesarv2.presentation.viewModels.viewmodels.MyFeedbacksViewModelFactory;
+import com.example.whereiscaesarv2.presentation.viewModels.viewmodels.MyRestaurantsViewModel;
+import com.example.whereiscaesarv2.presentation.viewModels.viewmodels.MyRestaurantsViewModelFactory;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -42,40 +49,30 @@ public class MyFeedbacksFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         FragmentMyFeedbacksBinding binding = FragmentMyFeedbacksBinding.bind(view);
-        List<MyFeedback> myFeedbackList = new ArrayList<>();
         binding.goBack.setOnClickListener(v -> {
             NavHostFragment.findNavController(this).popBackStack();
         });
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        CollectionReference feedbacksRef = db.collection("Feedbacks");
+        String userId = FirebaseAuth.getInstance().getUid();
 
-        feedbacksRef.whereEqualTo("userId", FirebaseAuth.getInstance().getUid())
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            QuerySnapshot querySnapshot = task.getResult();
-                            if (querySnapshot != null && !querySnapshot.isEmpty()) {
-                                List<DocumentSnapshot> documentSnapshots = querySnapshot.getDocuments();
-                                for(DocumentSnapshot documentSnapshot: documentSnapshots){
-                                    myFeedbackList.add(new MyFeedback(documentSnapshot.getString("restaurantName"), documentSnapshot.getString("dishName"), documentSnapshot.getString("feedbackText"), documentSnapshot.getDouble("estimation").intValue()));
-                                }
+        MyFeedbackAdapter adapter = new MyFeedbackAdapter(getContext());
+        RecyclerView recyclerView = binding.recyclerView;
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-                                MyFeedbackAdapter adapter = new MyFeedbackAdapter(getContext());
-                                RecyclerView recyclerView = binding.recyclerView;
-                                recyclerView.setAdapter(adapter);
-                                recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-                                adapter.setItemList(myFeedbackList);
+        GetMyFeedbacksListener listener = new GetMyFeedbacksListener() {
+            @Override
+            public void onSuccess(List<MyFeedback> myFeedbackList) {
+                adapter.setItemList(myFeedbackList);
+            }
 
-                            } else {
-                                Log.d("FirestoreExample", "Документ не найден");
-                            }
-                        } else {
-                            Log.e("FirestoreExample", "Ошибка при получении документа: ", task.getException());
-                        }
-                    }
-                });
+            @Override
+            public void onFailure() {
+                Toast.makeText(requireContext(), "У вас нет ни одного отзыва", Toast.LENGTH_SHORT).show();
+            }
+        };
+
+        MyFeedbacksViewModel viewModel = new ViewModelProvider(this, new MyFeedbacksViewModelFactory()).get(MyFeedbacksViewModel.class);
+        viewModel.getMyFeedbacks(userId, listener);
     }
 }

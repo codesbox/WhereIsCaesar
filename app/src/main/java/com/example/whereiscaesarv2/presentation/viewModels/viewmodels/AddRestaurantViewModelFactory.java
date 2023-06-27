@@ -14,27 +14,24 @@ import com.example.data.storages.firebase.DeleteDishStorageImpl;
 import com.example.data.storages.firebase.GetMyRestaurantStorage;
 import com.example.data.storages.firebase.GetMyRestaurantStorageImpl;
 import com.example.domain.repository.MyRestaurantRepository;
-import com.example.domain.useCases.AddDishUseCase;
+import com.example.domain.useCases.AddRestaurantUseCase;
 
-public class AddDishFragmentViewModelFactory implements ViewModelProvider.Factory {
+public class AddRestaurantViewModelFactory implements ViewModelProvider.Factory {
 
-    AddDishUseCase useCase;
+    AddRestaurantUseCase useCase;
 
-    public AddDishFragmentViewModelFactory(){
+    public AddRestaurantViewModelFactory(){
         AddDishStorage addDishStorage = new AddDishStorageImpl();
         DeleteDishStorage deleteDishStorage = new DeleteDishStorageImpl();
         GetMyRestaurantStorage getMyRestaurantStorage = new GetMyRestaurantStorageImpl();
         AddRestaurantStorage addRestaurantStorage = new AddRestaurantStorageImpl();
         MyRestaurantRepository repository = new MyRestaurantRepositoryImpl(addDishStorage, deleteDishStorage, getMyRestaurantStorage, addRestaurantStorage);
-        useCase = new AddDishUseCase(repository);
+        useCase = new AddRestaurantUseCase(repository);
     }
-
-
-
 
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        return (T) new AddDishFragmentViewModel(useCase);
+        return (T) new AddRestaurantViewModel(useCase);
     }
 }

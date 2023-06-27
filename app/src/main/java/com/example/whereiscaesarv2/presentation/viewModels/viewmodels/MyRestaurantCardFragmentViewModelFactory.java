@@ -7,6 +7,8 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.data.repositories.MyRestaurantRepositoryImpl;
 import com.example.data.storages.firebase.AddDishStorage;
 import com.example.data.storages.firebase.AddDishStorageImpl;
+import com.example.data.storages.firebase.AddRestaurantStorage;
+import com.example.data.storages.firebase.AddRestaurantStorageImpl;
 import com.example.data.storages.firebase.DeleteDishStorage;
 import com.example.data.storages.firebase.DeleteDishStorageImpl;
 import com.example.data.storages.firebase.GetMyRestaurantStorage;
@@ -24,7 +26,8 @@ public class MyRestaurantCardFragmentViewModelFactory implements ViewModelProvid
         AddDishStorage addDishStorage = new AddDishStorageImpl();
         DeleteDishStorage deleteDishStorage = new DeleteDishStorageImpl();
         GetMyRestaurantStorage getMyRestaurantStorage = new GetMyRestaurantStorageImpl();
-        MyRestaurantRepository repository = new MyRestaurantRepositoryImpl(addDishStorage, deleteDishStorage, getMyRestaurantStorage);
+        AddRestaurantStorage addRestaurantStorage = new AddRestaurantStorageImpl();
+        MyRestaurantRepository repository = new MyRestaurantRepositoryImpl(addDishStorage, deleteDishStorage, getMyRestaurantStorage, addRestaurantStorage);
         useCase = new GetMyRestaurantUseCase(repository);
         deleteDishUseCase = new DeleteDishUseCase(repository);
 

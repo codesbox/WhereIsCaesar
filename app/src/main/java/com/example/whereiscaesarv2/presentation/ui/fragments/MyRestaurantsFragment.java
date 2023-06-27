@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,12 +13,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.example.domain.listeners.GetMyRestaurantsListener;
 import com.example.whereiscaesarv2.R;
 import com.example.whereiscaesarv2.databinding.FragmentMyRestaurantsBinding;
 import com.example.whereiscaesarv2.presentation.ui.recycler.MyRestaurantsAdapter;
 import com.example.whereiscaesarv2.presentation.ui.recycler.SearchAdapter;
 import com.example.whereiscaesarv2.presentation.util.listeners.MyRestaurantCardClickListener;
+import com.example.whereiscaesarv2.presentation.viewModels.viewmodels.MyRestaurantCardFragmentViewModel;
+import com.example.whereiscaesarv2.presentation.viewModels.viewmodels.MyRestaurantCardFragmentViewModelFactory;
+import com.example.whereiscaesarv2.presentation.viewModels.viewmodels.MyRestaurantsViewModel;
+import com.example.whereiscaesarv2.presentation.viewModels.viewmodels.MyRestaurantsViewModelFactory;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -57,36 +64,30 @@ public class MyRestaurantsFragment extends Fragment {
             }
         };
 
-        List<String> restaurantsList = new ArrayList<>();
 
         MyRestaurantsAdapter adapter = new MyRestaurantsAdapter(getContext(), listener);
         RecyclerView recyclerView = binding.recyclerView;
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        GetMyRestaurantsListener getMyRestaurantsListener = new GetMyRestaurantsListener() {
+            @Override
+            public void onSuccess(List<String> restaurantsList) {
+                adapter.setRestaurants(restaurantsList);
+            }
 
-        CollectionReference restaurantsRef = db.collection("Restaurants");
+            @Override
+            public void onFailure() {
+                Toast.makeText(requireContext(), "У вас нет ни одного ресторана", Toast.LENGTH_SHORT).show();
+            }
+        };
 
-        // Создание запроса для фильтрации документов
-        Query query = restaurantsRef.whereEqualTo("userId", userid)
-                .whereEqualTo("mainPoint", true);
 
-        query.get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        QuerySnapshot querySnapshot = task.getResult();
-                        if (querySnapshot != null) {
-                            for (QueryDocumentSnapshot document : querySnapshot) {
 
-                                restaurantsList.add(document.getString("name"));
+        MyRestaurantsViewModel viewModel = new ViewModelProvider(this, new MyRestaurantsViewModelFactory()).get(MyRestaurantsViewModel.class);
+        viewModel.getRestaurants(userid, getMyRestaurantsListener);
 
-                            }
-                            adapter.setRestaurants(restaurantsList);
-                        }
-                    } else {
-                    }
-                });
+
 
 
 
