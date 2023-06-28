@@ -1,5 +1,7 @@
 package com.example.data.storages.firebase;
 
+import com.example.domain.models.NewFeedbackModel;
+
 public interface ApproveFeedbackStorage {
-    void approve(String feedbackId);
+    void approve(NewFeedbackModel newFeedbackModel);
 }

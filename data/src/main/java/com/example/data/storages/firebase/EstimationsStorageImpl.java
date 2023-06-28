@@ -31,6 +31,7 @@ public class EstimationsStorageImpl implements EstimationsStorage{
 
         feedbacksRef.whereEqualTo("dishName", dishName)
                 .whereEqualTo("restaurantId", restaurantName)
+                .whereEqualTo("status", "s")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override

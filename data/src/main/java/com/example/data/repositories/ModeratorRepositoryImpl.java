@@ -8,6 +8,7 @@ import com.example.data.storages.firebase.RejectFeedbackStorage;
 import com.example.data.storages.firebase.RejectRestaurantStorage;
 import com.example.domain.listeners.GetModeratorFeedbacksListener;
 import com.example.domain.listeners.GetModeratorRestaurantsListener;
+import com.example.domain.models.NewFeedbackModel;
 import com.example.domain.repository.ModeratorRepository;
 
 public class ModeratorRepositoryImpl implements ModeratorRepository {
@@ -54,7 +55,7 @@ public class ModeratorRepositoryImpl implements ModeratorRepository {
     }
 
     @Override
-    public void approveFeedback(String FeedbackId) {
-        approveFeedbackStorage.approve(FeedbackId);
+    public void approveFeedback(NewFeedbackModel newFeedbackModel) {
+        approveFeedbackStorage.approve(newFeedbackModel);
     }
 }
