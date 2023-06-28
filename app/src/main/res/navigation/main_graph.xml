@@ -28,6 +28,12 @@
         <action
             android:id="@+id/action_mainMapFragment_to_myFeedbacksFragment2"
             app:destination="@id/myFeedbacksFragment2" />
+        <action
+            android:id="@+id/action_mainMapFragment_to_newFeedbacksFragment"
+            app:destination="@id/newFeedbacksFragment" />
+        <action
+            android:id="@+id/action_mainMapFragment_to_newRestaurantsFragment"
+            app:destination="@id/newRestaurantsFragment" />
     </fragment>
     <fragment
         android:id="@+id/categoryBSFragment"
@@ -72,6 +78,9 @@
         <action
             android:id="@+id/action_myRestaurantCardFragment_to_addDishFragment"
             app:destination="@id/addDishFragment" />
+        <action
+            android:id="@+id/action_myRestaurantCardFragment_to_myRestaurantsPointsFragment"
+            app:destination="@id/myRestaurantsPointsFragment" />
     </fragment>
     <fragment
         android:id="@+id/addDishFragment"
@@ -81,4 +90,24 @@
         android:id="@+id/myFeedbacksFragment2"
         android:name="com.example.whereiscaesarv2.presentation.ui.fragments.MyFeedbacksFragment"
         android:label="MyFeedbacksFragment" />
+    <fragment
+        android:id="@+id/myRestaurantsPointsFragment"
+        android:name="com.example.whereiscaesarv2.presentation.ui.fragments.MyRestaurantsPointsFragment"
+        android:label="MyRestaurantsPointsFragment" >
+        <action
+            android:id="@+id/action_myRestaurantsPointsFragment_to_addPointFragment"
+            app:destination="@id/addPointFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addPointFragment"
+        android:name="com.example.whereiscaesarv2.presentation.ui.fragments.AddPointFragment"
+        android:label="AddPointFragment" />
+    <fragment
+        android:id="@+id/newFeedbacksFragment"
+        android:name="com.example.whereiscaesarv2.presentation.ui.fragments.NewFeedbacksFragment"
+        android:label="NewFeedbacksFragment" />
+    <fragment
+        android:id="@+id/newRestaurantsFragment"
+        android:name="com.example.whereiscaesarv2.presentation.ui.fragments.NewRestaurantsFragment"
+        android:label="NewRestaurantsFragment" />
 </navigation>

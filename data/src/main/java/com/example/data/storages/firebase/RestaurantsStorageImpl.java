@@ -28,6 +28,7 @@ import com.google.gson.Gson;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -86,7 +87,7 @@ public class RestaurantsStorageImpl implements RestaurantsStorage{
 
                 List<RestaurantModelData> restaurantModelDataList = new ArrayList<>();
 
-                Map<String, RestaurantPoint> pointsList = new HashMap<>();
+                Map<String, List<RestaurantPoint>> pointsList = new HashMap<>();
                 List<String> restaurantsId = new ArrayList<>();
 
 
@@ -102,14 +103,19 @@ public class RestaurantsStorageImpl implements RestaurantsStorage{
                     String restaurantId = documentSnapshot.getString("restaurantId");
                     String address = documentSnapshot.getString("address");
 
-                    pointsList.put(restaurantId, new RestaurantPoint(address, point));
+
+
+                    List<RestaurantPoint> list = pointsList.get(restaurantId);
+                    if (list == null) {
+                        list = new ArrayList<>();
+                        pointsList.put(restaurantId, list);
+                    }
+                    list.add(new RestaurantPoint(address, point));
+                    pointsList.put(restaurantId, list);
                     restaurantsId.add(restaurantId);
 
-
-
                 }
-
-
+                Log.d("CCCCCCCCCCCCCCCCCCCCCCCCC", String.valueOf(restaurantsId.isEmpty()));
                 if (!restaurantsId.isEmpty()){
 
                     FirebaseFirestore db2 = FirebaseFirestore.getInstance();
@@ -130,11 +136,16 @@ public class RestaurantsStorageImpl implements RestaurantsStorage{
                     Task<QuerySnapshot> task20 = query5.get();
                     tasks2.add(task20);
 
+                    Query query6 = restaurantsRef2.whereIn("status", Collections.singletonList("s"));
+                    Task<QuerySnapshot> task21 = query6.get();
+                    tasks2.add(task21);
+
 
                     Tasks.whenAllSuccess(tasks2).addOnCompleteListener(task3 -> {
 
 
                         if (task3.isSuccessful()){
+
 
 
                             List<Object> resultsq = task3.getResult();
@@ -160,6 +171,7 @@ public class RestaurantsStorageImpl implements RestaurantsStorage{
 
                             for (DocumentSnapshot documentSnapshot : combinedResultsq){
 
+
                                 String documentId = documentSnapshot.getId();
 
 
@@ -181,15 +193,18 @@ public class RestaurantsStorageImpl implements RestaurantsStorage{
 
                                 String userId = documentSnapshot.getString("userId");
                                 String restaurantName = documentSnapshot.getString("name");
-                                PointModel pointModel = new PointModel(pointsList.get(documentId).pointModel.latitude, pointsList.get(documentId).pointModel.longitude);
-                                String restaurantId = documentSnapshot.getId();
 
-                                RestaurantModelData restaurantModelData = new RestaurantModelData(restaurantName,
-                                        userId ,allSum, allCount, pointModel, dishMapList, pointsList.get(documentId).address, restaurantId);
-                                restaurantModelDataList.add(restaurantModelData);
+                                List<RestaurantPoint> restaurantPointList = pointsList.get(documentId);
+
+                                for (RestaurantPoint restaurantPoint : restaurantPointList){
 
 
-
+                                    PointModel pointModel = new PointModel(restaurantPoint.pointModel.latitude, restaurantPoint.pointModel.longitude);
+                                    String restaurantId = documentSnapshot.getId();
+                                    RestaurantModelData restaurantModelData = new RestaurantModelData(restaurantName,
+                                            userId ,allSum, allCount, pointModel, dishMapList, restaurantPoint.address, restaurantId);
+                                    restaurantModelDataList.add(restaurantModelData);
+                                }
 
 
                             }

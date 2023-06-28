@@ -1,7 +1,10 @@
 package com.example.whereiscaesarv2.presentation.ui.recycler;
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -9,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.domain.models.MapDishCard;
 import com.example.domain.models.MyRestaurantsModel;
+import com.example.whereiscaesarv2.R;
 import com.example.whereiscaesarv2.databinding.MyRestaurantCardRecyclerBinding;
 import com.example.whereiscaesarv2.presentation.util.listeners.MyRestaurantCardClickListener;
 import com.example.whereiscaesarv2.presentation.util.listeners.RestaurantDishCardClickListener;
@@ -62,9 +66,23 @@ public class MyRestaurantsAdapter extends RecyclerView.Adapter<MyRestaurantsAdap
             this.context = context;
             this.listener = listener;
         }
+
+
         public void bind(MyRestaurantsModel restaurant){
             binding.cardView.setOnClickListener(v -> {listener.onCardClick(restaurant);});
             binding.name.setText(restaurant.restaurantName);
+            if (restaurant.status.equals("m")) {
+                Log.d("VVVVVVVVVVV", restaurant.status);
+                binding.status.setText("На проверке");
+                binding.status.setTextColor(Color.parseColor("#FFA11B"));
+            }
+            if (restaurant.status.equals("s")){
+                binding.status.setVisibility(View.GONE);
+            }
+            if (restaurant.status.equals("f")){
+                binding.status.setText("Не прошел проверку");
+                binding.status.setTextColor(Color.parseColor("#AA0000"));
+            }
         }
     }
 }

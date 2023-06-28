@@ -1,5 +1,6 @@
 package com.example.whereiscaesarv2.presentation.ui.fragments;
 
+import static com.example.whereiscaesarv2.presentation.app.App.isMapKitSetApiKey;
 import static com.example.whereiscaesarv2.presentation.ui.fragments.MainMapFragment.bottomSheetBehavior;
 
 import android.os.Bundle;
@@ -25,6 +26,11 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.SetOptions;
+import com.yandex.mapkit.Animation;
+import com.yandex.mapkit.MapKitFactory;
+import com.yandex.mapkit.geometry.Point;
+import com.yandex.mapkit.map.CameraPosition;
+import com.yandex.mapkit.mapview.MapView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,9 +38,28 @@ import java.util.Map;
 
 public class AddRestaurantFragment extends Fragment {
 
+
+    private MapView mapView;
+    double yotcLat = 55.751244;
+    double yotcLon = 37.618426;
+    private static boolean  isMapKitInitialized = false;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        if (!isMapKitSetApiKey){
+            MapKitFactory.setApiKey("6c6cd304-9d0b-4a28-a718-27e056899465");
+            isMapKitSetApiKey = true;
+        }
+
+        if (!isMapKitInitialized){
+            MapKitFactory.initialize(requireContext());
+            isMapKitInitialized = true;
+        }
+
+
+
         return inflater.inflate(R.layout.fragment_add_restaurant, container, false);
     }
 
@@ -44,6 +69,12 @@ public class AddRestaurantFragment extends Fragment {
 
         FragmentAddRestaurantBinding binding = FragmentAddRestaurantBinding.bind(view);
 
+        mapView = binding.mapView2;
+        mapView.getMap().move(
+                new CameraPosition(new Point(yotcLat, yotcLon), 10.0f, 0.0f, 0.0f),
+                new Animation(Animation.Type.SMOOTH, 0),
+                null);
+
         AddRestaurantViewModel viewModel = new ViewModelProvider(this, new AddRestaurantViewModelFactory()).get(AddRestaurantViewModel.class);
 
         String id = getArguments().getString("id");
@@ -51,8 +82,7 @@ public class AddRestaurantFragment extends Fragment {
         binding.signUpButton.setOnClickListener(v -> {
 
             String restaurantName = binding.firstNameRes.getText().toString();
-            Double latitude = Double.valueOf(binding.lati.getText().toString());
-            Double longitude = Double.valueOf(binding.longi.getText().toString());
+
             String address = binding.adress.getText().toString();
 
             AddRestaurantListener addRestaurantListener = new AddRestaurantListener() {
@@ -67,7 +97,9 @@ public class AddRestaurantFragment extends Fragment {
                 }
             };
 
-            viewModel.addRestaurant(latitude, longitude, restaurantName, id, addRestaurantListener);
+            Point point = mapView.getMap().getCameraPosition().getTarget();
+
+            viewModel.addRestaurant(point.getLatitude(), point.getLongitude(), restaurantName, id, addRestaurantListener, address);
         });
     }
 }

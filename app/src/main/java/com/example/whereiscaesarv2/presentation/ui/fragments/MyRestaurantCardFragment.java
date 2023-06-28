@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.example.data.storages.models.RestaurantModelData;
 import com.example.domain.listeners.DeleteDishListener;
+import com.example.domain.listeners.DeleteRestaurantListener;
 import com.example.domain.listeners.GetMyRestaurantListener;
 import com.example.domain.models.DishModelDomain;
 import com.example.domain.models.MapDishCard;
@@ -88,6 +89,17 @@ public class MyRestaurantCardFragment extends Fragment {
             NavHostFragment.findNavController(this).navigate(R.id.action_myRestaurantCardFragment_to_addDishFragment, bundle);
         });
 
+        binding.managePointBut.setOnClickListener(v -> {
+
+            Bundle bundle = new Bundle();
+            bundle.putString("restaurantId", restaurantId);
+
+            NavHostFragment.findNavController(this).navigate(R.id.action_myRestaurantCardFragment_to_myRestaurantsPointsFragment, bundle);
+        });
+        binding.goBack.setOnClickListener(v -> {
+            NavHostFragment.findNavController(this).popBackStack();
+        });
+
         DeleteDishListener deleteDishListener = new DeleteDishListener() {
             @Override
             public void onSuccess() {
@@ -104,7 +116,7 @@ public class MyRestaurantCardFragment extends Fragment {
         RestaurantDishCardClickListener listener = new RestaurantDishCardClickListener() {
             @Override
             public void onCardClick(MapDishCard mapDishCard) {
-                viewModel.deleteDish(new DishModelDomain(mapDishCard.dishName, mapDishCard.imageUrl, true), name, deleteDishListener);
+                viewModel.deleteDish(new DishModelDomain(mapDishCard.dishName, mapDishCard.imageUrl, true), restaurantId, deleteDishListener);
             }
         };
 
@@ -174,5 +186,25 @@ public class MyRestaurantCardFragment extends Fragment {
         };
 
         viewModel.getRestaurant(restaurantId, getMyRestaurantListener);
+
+
+        binding.deleteRestaurantBut.setOnClickListener(v -> {
+
+            DeleteRestaurantListener deleteRestaurantListener = new DeleteRestaurantListener() {
+                @Override
+                public void onSuccess() {
+                    Toast.makeText(requireContext(), "Ресторан удален", Toast.LENGTH_SHORT).show();
+                    NavHostFragment.findNavController(MyRestaurantCardFragment.this).popBackStack(R.id.myRestaurantsFragment2, false);
+                }
+
+                @Override
+                public void onFailure() {
+                    Toast.makeText(requireContext(), "Ошибка", Toast.LENGTH_SHORT).show();
+                }
+            };
+
+            viewModel.deleteRestaurant(restaurantId, deleteRestaurantListener);
+
+        });
     }
 }

@@ -11,7 +11,7 @@ public class AddRestaurantUseCase {
         this.repository = repository;
     }
 
-    public void execute(Double latitude, Double longitude, String restaurantName, String id, AddRestaurantListener listener){
-        repository.addRestaurant(latitude, longitude, restaurantName, id, listener);
+    public void execute(Double latitude, Double longitude, String restaurantName, String id, AddRestaurantListener listener, String address){
+        repository.addRestaurant(latitude, longitude, restaurantName, id, listener, address);
     }
 }

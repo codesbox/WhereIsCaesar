@@ -19,8 +19,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.common.reflect.TypeToken;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.gson.Gson;
 
@@ -32,14 +35,13 @@ import java.util.Map;
 public class DeleteDishStorageImpl implements DeleteDishStorage{
 
     @Override
-    public void deleteDish(DishModelDomain dishModelDomain, String restaurantName, DeleteDishListener listener) {
+    public void deleteDish(DishModelDomain dishModelDomain, String restaurantId, DeleteDishListener listener) {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference restaurantsRef = db.collection("Restaurants");
 
         restaurantsRef
-                .whereEqualTo("name", restaurantName)
-                .whereEqualTo("mainPoint", true)
+                .whereEqualTo(FieldPath.documentId(), restaurantId)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -48,6 +50,9 @@ public class DeleteDishStorageImpl implements DeleteDishStorage{
                             DocumentSnapshot documentSnapshot = task.getResult().getDocuments().get(0);
 
                             String documentId = documentSnapshot.getId();
+
+                            Integer allSum = documentSnapshot.getDouble("allSum").intValue();
+                            Integer allCount = documentSnapshot.getDouble("allCount").intValue();
 
 
                             String json = new Gson().toJson(documentSnapshot.get("dishes"));
@@ -58,11 +63,22 @@ public class DeleteDishStorageImpl implements DeleteDishStorage{
 
                             List<MapDishCard> dishMapList = new ArrayList<>();
 
+                            Integer sum = 0;
+                            Integer count = 0;
+
                             for (Map.Entry<String, Object> entry : dishesMap.entrySet()){
                                 Map<String, Object> dishValueMap = (Map<String, Object>) entry.getValue();
                                 dishMapList.add(new MapDishCard(entry.getKey(), (String) dishValueMap.get("imageUrl"), ((Double) dishValueMap.get("count")).intValue(), ((Double) dishValueMap.get("sum")).intValue(), (String) dishValueMap.get("category")));
+                                if (entry.getKey().equals(dishModelDomain.title)){
+                                    sum = ((Double) dishValueMap.get("sum")).intValue();
+                                    count = ((Double) dishValueMap.get("count")).intValue();
+                                }
                             }
                             String restaurantName = documentSnapshot.getString("name");
+
+                            allSum -= sum;
+                            allCount -= count;
+
 
 
 
@@ -70,15 +86,39 @@ public class DeleteDishStorageImpl implements DeleteDishStorage{
                             dishesNames.remove(dishModelDomain.title);
 
 
-                            restaurantsRef.document(documentId).update("dishes", dishesMap, "dishesNames", dishesNames).addOnSuccessListener(new OnSuccessListener<Void>() {
+
+                            restaurantsRef.document(documentId).update("dishes", dishesMap, "dishesNames", dishesNames, "allSum", allSum, "allCount", allCount).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void unused) {
-                                    listener.onSuccess();
+
+                                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+                                    CollectionReference feedbacksRef = db.collection("Feedbacks");
+
+                                    Query query = feedbacksRef.whereEqualTo("dishName", dishModelDomain.title).whereEqualTo("restaurantId", restaurantId);
+
+                                    query.get().addOnCompleteListener(task -> {
+                                        if (task.isSuccessful()) {
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                Log.d("!!!!!!!!!!!!!!!!!!!!", "dfjdijfidjf");
+                                                document.getReference().delete().addOnSuccessListener(aVoid -> {
+                                                    // Документ успешно удален
+                                                }).addOnFailureListener(e -> {
+
+                                                });
+                                            }
+                                            listener.onSuccess();
+                                        } else {
+                                            listener.onFailure();
+                                        }
+                                    });
+
+
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
-                                    listener.onFailure();
+
                                 }
                             });
 

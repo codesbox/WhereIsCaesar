@@ -58,6 +58,7 @@ public class AddFeedbackStorageImpl implements AddFeedbackStorage{
                                 data.put("lastName", lastName);
                                 data.put("userLevel", level);
                                 data.put("restaurantId", restaurantId);
+                                data.put("status", "m");
 
 
                                 newDocumentRef.set(data)

@@ -31,7 +31,7 @@ public class GetMyRestaurantsStorageImpl implements GetMyRestaurantsStorage{
                         if (querySnapshot != null) {
                             for (QueryDocumentSnapshot document : querySnapshot) {
 
-                                restaurantsList.add(new MyRestaurantsModel(document.getString("name"), document.getId()));
+                                restaurantsList.add(new MyRestaurantsModel(document.getString("name"), document.getId(), document.getString("status")));
 
                             }
                             listener.onSuccess(restaurantsList);

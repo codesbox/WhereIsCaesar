@@ -14,7 +14,7 @@ import java.util.Map;
 
 public class AddRestaurantStorageImpl implements AddRestaurantStorage{
     @Override
-    public void addRestaurant(Double latitude, Double longitude, String restaurantName, String id, AddRestaurantListener listener) {
+    public void addRestaurant(Double latitude, Double longitude, String restaurantName, String id, AddRestaurantListener listener, String address) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference restaurantsRef = db.collection("Restaurants");
         String restaurantId = restaurantsRef.document().getId();
@@ -25,25 +25,34 @@ public class AddRestaurantStorageImpl implements AddRestaurantStorage{
         restaurantData.put("allCount", 0);
         restaurantData.put("dishes", new HashMap<>());
         restaurantData.put("dishesNames", new ArrayList<>());
-        restaurantData.put("latitude", latitude);
-        restaurantData.put("longitude", longitude);
         restaurantData.put("name", restaurantName);
-        restaurantData.put("mainPoint", true);
-        restaurantData.put("address", true);
         restaurantData.put("userId", id);
-
-        GeoPoint location = new GeoPoint(latitude, longitude);
-        restaurantData.put("geoPoint", location);
+        restaurantData.put("status", "m");
 
         // Добавление документа в коллекцию Restaurants
-        restaurantsRef.document(restaurantName)
-                .set(restaurantData, SetOptions.merge())
+        restaurantsRef.add(restaurantData)
                 .addOnSuccessListener(aVoid -> {
-                    // Успешное добавление
-                    listener.onSuccess();
+
+                    Map<String, Object> pointData = new HashMap<>();
+                    pointData.put("latitude", latitude);
+                    pointData.put("longitude", longitude);
+                    pointData.put("address", address);
+                    GeoPoint location = new GeoPoint(latitude, longitude);
+                    pointData.put("geoPoint", location);
+                    pointData.put("restaurantId", aVoid.getId());
+
+                    db.collection("RestaurantsPoints")
+                            .add(pointData)
+                            .addOnSuccessListener(documentReference -> {
+                                listener.onSuccess();
+                            })
+                            .addOnFailureListener(e -> {
+                                listener.onFailure();
+                            });
+
                 })
                 .addOnFailureListener(e -> {
-                    listener.onFailure();
+
                     // Ошибка при добавлении
                 });
     }

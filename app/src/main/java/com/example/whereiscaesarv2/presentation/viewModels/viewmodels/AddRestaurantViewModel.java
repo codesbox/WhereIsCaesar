@@ -13,8 +13,8 @@ public class AddRestaurantViewModel extends ViewModel {
         this.useCase = useCase;
     }
 
-    public void addRestaurant(Double latitude, Double longitude, String restaurantName, String id, AddRestaurantListener listener){
-        useCase.execute(latitude, longitude, restaurantName, id, listener);
+    public void addRestaurant(Double latitude, Double longitude, String restaurantName, String id, AddRestaurantListener listener, String address){
+        useCase.execute(latitude, longitude, restaurantName, id, listener, address);
     }
 
 }
