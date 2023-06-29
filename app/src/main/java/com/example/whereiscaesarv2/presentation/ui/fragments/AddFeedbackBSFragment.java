@@ -8,10 +8,13 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.example.domain.listeners.AddFeedbackListener;
@@ -63,20 +66,62 @@ public class AddFeedbackBSFragment extends Fragment {
         binding.dish.setText(dishName);
         binding.rest.setText(restaurantName);
 
+        binding.sendFeedback.setEnabled(false);
+
+
+        TextWatcher textWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                Integer estimationNumber = Integer.valueOf(binding.estimation.getText().toString());
+                boolean estimationCheck = false;
+                if (estimationNumber < 11 && estimationNumber > 0){
+                    estimationCheck = true;
+                }
+
+                boolean allFieldsFilled = !binding.feedback.getText().toString().isEmpty() &&
+                        !binding.estimation.getText().toString().isEmpty() && estimationCheck;
+                binding.sendFeedback.setEnabled(allFieldsFilled);
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        };
+
+        binding.estimation.addTextChangedListener(textWatcher);
+        binding.feedback.addTextChangedListener(textWatcher);
+
+
+
+
         AddFeedbackListener addFeedbackListener = new AddFeedbackListener() {
             @Override
             public void onSuccess() {
+                binding.progressBar6.setVisibility(View.GONE);
+                requireActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                 Toast.makeText(requireContext(), "Отзыв отправлен", Toast.LENGTH_SHORT).show();
                 NavHostFragment.findNavController(AddFeedbackBSFragment.this).popBackStack();
             }
 
             @Override
             public void onFailure() {
+                binding.progressBar6.setVisibility(View.GONE);
+                requireActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                 Toast.makeText(requireContext(), "Ошибка", Toast.LENGTH_SHORT).show();
             }
         };
 
         binding.sendFeedback.setOnClickListener(v -> {
+            binding.progressBar6.setVisibility(View.VISIBLE);
+            requireActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
             String feedback = binding.feedback.getText().toString();
             Integer estimation = Integer.valueOf(binding.estimation.getText().toString());
             viewModel.addFeedback(addFeedbackListener, id, dishName, feedback, restaurantName, estimation, restaurantId);

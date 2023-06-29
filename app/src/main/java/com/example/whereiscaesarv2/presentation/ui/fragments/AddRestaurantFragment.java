@@ -9,10 +9,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.fragment.NavHostFragment;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.example.domain.listeners.AddRestaurantListener;
@@ -69,6 +73,37 @@ public class AddRestaurantFragment extends Fragment {
 
         FragmentAddRestaurantBinding binding = FragmentAddRestaurantBinding.bind(view);
 
+        binding.signUpButton.setEnabled(false);
+
+
+
+        TextWatcher textWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                boolean allFieldsFilled = !binding.firstNameRes.getText().toString().isEmpty() &&
+                        !binding.adress.getText().toString().isEmpty();
+                binding.signUpButton.setEnabled(allFieldsFilled);
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        };
+
+        binding.adress.addTextChangedListener(textWatcher);
+        binding.firstNameRes.addTextChangedListener(textWatcher);
+
+
+
+
         mapView = binding.mapView2;
         mapView.getMap().move(
                 new CameraPosition(new Point(yotcLat, yotcLon), 10.0f, 0.0f, 0.0f),
@@ -81,18 +116,28 @@ public class AddRestaurantFragment extends Fragment {
 
         binding.signUpButton.setOnClickListener(v -> {
 
+            requireActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+            binding.progressBar4.setVisibility(View.VISIBLE);
+
             String restaurantName = binding.firstNameRes.getText().toString();
 
             String address = binding.adress.getText().toString();
 
+
+
             AddRestaurantListener addRestaurantListener = new AddRestaurantListener() {
                 @Override
                 public void onSuccess() {
+                    binding.progressBar4.setVisibility(View.GONE);
+                    requireActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                     Toast.makeText(requireContext(), "Успешно", Toast.LENGTH_SHORT).show();
+                    NavHostFragment.findNavController(AddRestaurantFragment.this).popBackStack();
                 }
 
                 @Override
                 public void onFailure() {
+                    binding.progressBar4.setVisibility(View.GONE);
+                    requireActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                     Toast.makeText(requireContext(), "Ошибка", Toast.LENGTH_SHORT).show();
                 }
             };

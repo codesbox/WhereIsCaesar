@@ -10,9 +10,12 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.example.domain.listeners.AddPointListener;
@@ -65,6 +68,31 @@ public class AddPointFragment extends Fragment {
 
         AddPointFragmentViewModel viewModel = new ViewModelProvider(this, new AddPointFragmentViewModelFactory()).get(AddPointFragmentViewModel.class);
 
+        binding.signUpButton.setEnabled(false);
+
+
+        TextWatcher textWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+
+                boolean allFieldsFilled = !binding.adress.getText().toString().isEmpty();
+                binding.signUpButton.setEnabled(allFieldsFilled);
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        };
+        binding.adress.addTextChangedListener(textWatcher);
+
 
         mapView = binding.mapView2;
         mapView.getMap().move(
@@ -77,16 +105,22 @@ public class AddPointFragment extends Fragment {
         });
 
         binding.signUpButton.setOnClickListener(v -> {
+            requireActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+            binding.progressBar5.setVisibility(View.VISIBLE);
 
             AddPointListener addPointListener = new AddPointListener() {
                 @Override
                 public void onSuccess() {
+                    requireActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                    binding.progressBar5.setVisibility(View.GONE);
                     Toast.makeText(requireContext(), "Точка добавлена", Toast.LENGTH_SHORT).show();
                     NavHostFragment.findNavController(AddPointFragment.this).popBackStack();
                 }
 
                 @Override
                 public void onFailure() {
+                    requireActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                    binding.progressBar5.setVisibility(View.GONE);
                     Toast.makeText(requireContext(), "Ошибка", Toast.LENGTH_SHORT).show();
                 }
             };

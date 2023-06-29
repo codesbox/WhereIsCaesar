@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.example.domain.listeners.AddDishListener;
@@ -96,21 +97,29 @@ public class AddDishFragment extends Fragment {
 
                 }
                 else {
+                    requireActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                    binding.progressBar2.setVisibility(View.VISIBLE);
                     AddDishListener addDishListener = new AddDishListener() {
                         @Override
                         public void onSuccess() {
+                            requireActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                            binding.progressBar2.setVisibility(View.GONE);
                             Toast.makeText(requireContext(), "Блюдо добавлено", Toast.LENGTH_SHORT).show();
                             NavHostFragment.findNavController(AddDishFragment.this).popBackStack(R.id.myRestaurantCardFragment, false);
                         }
 
                         @Override
                         public void onFailure() {
+                            requireActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                            binding.progressBar2.setVisibility(View.GONE);
                             Toast.makeText(requireContext(), "Неизвестная ошибка", Toast.LENGTH_SHORT).show();
 
                         }
 
                         @Override
                         public void onDishHasAlreadyBeenAdded() {
+                            requireActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                            binding.progressBar2.setVisibility(View.GONE);
                             Toast.makeText(requireContext(), "Данное блюдо уже добавлено", Toast.LENGTH_SHORT).show();
                         }
                     };

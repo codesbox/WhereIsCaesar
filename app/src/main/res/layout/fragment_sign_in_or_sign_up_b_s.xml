@@ -5,17 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".presentation.ui.fragments.account.SignInOrSignUpBSFragment"
-    android:background="@drawable/bottom_sheet_bg">
+    android:background="@drawable/bottom_sheet_bg"
+    android:layout_marginTop="50dp">
 
 
     <Button
         android:id="@+id/button"
-        android:layout_width="99dp"
-        android:layout_height="49dp"
-        android:layout_marginTop="120dp"
-        android:text="Вход"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="150dp"
         android:backgroundTint="@color/blue_300"
-        android:textSize="20sp"
+        android:text="Вход"
+        android:textSize="25sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView17" />
@@ -37,7 +38,7 @@
         android:id="@+id/textView17"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="88dp"
+        android:layout_marginTop="150dp"
         android:text="Вы не вошли в приложение"
         android:textSize="25sp"
         app:layout_constraintEnd_toEndOf="parent"

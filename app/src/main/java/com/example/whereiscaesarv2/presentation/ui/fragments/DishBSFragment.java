@@ -71,10 +71,17 @@ public class DishBSFragment extends Fragment {
         binding.dishName.setText(mapDishCard.dishName);
         binding.feedBackCount.setText(String.format("Оценок: %s", mapDishCard.counter.toString()));
 
-        double result = (double) mapDishCard.sum / mapDishCard.counter;
-        DecimalFormat decimalFormat = new DecimalFormat("#0.0");
-        String formattedResult = decimalFormat.format(result);
-        binding.estimation.setText(formattedResult);
+        if (mapDishCard.sum == 0.0){
+            binding.estimation.setText("0.0");
+        }
+        else{
+            double result = (double) mapDishCard.sum / mapDishCard.counter;
+            DecimalFormat decimalFormat = new DecimalFormat("#0.0");
+            String formattedResult = decimalFormat.format(result);
+            binding.estimation.setText(formattedResult);
+
+        }
+
         DishBSFragmentViewModel vm = new ViewModelProvider(requireActivity(), new DishBSFragmentViewModelFactory()).get(DishBSFragmentViewModel.class);
         vm.getEstimation(restaurantId, mapDishCard.dishName);
         vm.getMutableLiveData().observe(getViewLifecycleOwner(), feedbackModelList -> {

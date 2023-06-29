@@ -17,6 +17,8 @@ public class AddRestaurantStorageImpl implements AddRestaurantStorage{
     public void addRestaurant(Double latitude, Double longitude, String restaurantName, String id, AddRestaurantListener listener, String address) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference restaurantsRef = db.collection("Restaurants");
+
+
         String restaurantId = restaurantsRef.document().getId();
 
         // Создание данных для добавления
@@ -52,7 +54,7 @@ public class AddRestaurantStorageImpl implements AddRestaurantStorage{
 
                 })
                 .addOnFailureListener(e -> {
-
+                    listener.onFailure();
                     // Ошибка при добавлении
                 });
     }

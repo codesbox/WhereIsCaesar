@@ -80,10 +80,18 @@ public class RestaurantsListAdapter extends RecyclerView.Adapter<RestaurantsList
         public void bind(RestaurantModelDomain restaurantModelDomain){
             binding.name.setText(restaurantModelDomain.restaurantName);
             binding.cardView.setOnClickListener(v -> listener.onCardClick(restaurantModelDomain));
-            double result = (double) restaurantModelDomain.allSum / restaurantModelDomain.allCount;
-            DecimalFormat decimalFormat = new DecimalFormat("#0.0");
-            String formattedResult = decimalFormat.format(result);
-            binding.restEstimation.setText(formattedResult);
+
+
+            if (restaurantModelDomain.allSum == 0.0){
+                binding.restEstimation.setText("0.0");
+            }
+            else{
+                double result = (double) restaurantModelDomain.allSum / restaurantModelDomain.allCount;
+                DecimalFormat decimalFormat = new DecimalFormat("#0.0");
+                String formattedResult = decimalFormat.format(result);
+                binding.restEstimation.setText(formattedResult);
+
+            }
             binding.counter.setText(String.format("Оценок: %s", restaurantModelDomain.allCount.toString()));
 
         }

@@ -20,13 +20,14 @@
 
     <TextView
         android:id="@+id/restaurantName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="136dp"
+        android:layout_width="256dp"
+        android:layout_height="97dp"
         android:layout_marginTop="24dp"
+        android:gravity="center"
         android:text="Ресторан"
         android:textColor="@color/black_500"
         android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -239,7 +240,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="56dp"
                 android:layout_marginTop="20dp"
-                android:layout_marginBottom="200dp"
+                android:layout_marginBottom="400dp"
                 android:backgroundTint="#A10E0E"
                 android:text="Удалить ресторан"
                 android:textSize="20sp"

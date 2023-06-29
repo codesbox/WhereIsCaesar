@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -72,6 +73,12 @@ public class SignUpFragment extends Fragment {
             }
         };
 
+        binding.signInButton.setOnClickListener(v -> {
+
+            NavHostFragment.findNavController(this).popBackStack();
+
+        });
+
         binding.firstName.addTextChangedListener(textWatcher);
         binding.lastName.addTextChangedListener(textWatcher);
         binding.email.addTextChangedListener(textWatcher);
@@ -94,6 +101,7 @@ public class SignUpFragment extends Fragment {
                     Toast.makeText(requireContext(), "Аккаунт успешно создан", Toast.LENGTH_SHORT).show();
                     binding.progressBar3.setVisibility(View.GONE);
                     requireActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                    NavHostFragment.findNavController(SignUpFragment.this).navigate(R.id.mainMapFragment);
                 }
 
                 @Override
