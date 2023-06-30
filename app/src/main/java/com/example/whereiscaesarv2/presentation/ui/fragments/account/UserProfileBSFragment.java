@@ -90,7 +90,6 @@ public class UserProfileBSFragment extends Fragment {
                                     if (task.isSuccessful()) {
                                         DocumentSnapshot document = task.getResult();
                                         if (document.exists()) {
-                                            // Документ найден, меняем значение поля "q" на "hhfbhdbc"
                                             documentRef.update("type", "r")
                                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                         @Override

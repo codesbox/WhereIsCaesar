@@ -21,7 +21,7 @@ public class AddRestaurantStorageImpl implements AddRestaurantStorage{
 
         String restaurantId = restaurantsRef.document().getId();
 
-        // Создание данных для добавления
+
         Map<String, Object> restaurantData = new HashMap<>();
         restaurantData.put("allSum", 0);
         restaurantData.put("allCount", 0);
@@ -31,7 +31,7 @@ public class AddRestaurantStorageImpl implements AddRestaurantStorage{
         restaurantData.put("userId", id);
         restaurantData.put("status", "m");
 
-        // Добавление документа в коллекцию Restaurants
+
         restaurantsRef.add(restaurantData)
                 .addOnSuccessListener(aVoid -> {
 
@@ -55,7 +55,7 @@ public class AddRestaurantStorageImpl implements AddRestaurantStorage{
                 })
                 .addOnFailureListener(e -> {
                     listener.onFailure();
-                    // Ошибка при добавлении
+
                 });
     }
 }

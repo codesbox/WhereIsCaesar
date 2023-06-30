@@ -37,7 +37,6 @@ public class EstimationsStorageImpl implements EstimationsStorage{
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            // Получение списка документов
                             List<DocumentSnapshot> documents = task.getResult().getDocuments();
                             List<FeedbackModel> feedbackList = new ArrayList<>();
                             for (DocumentSnapshot document : documents) {

@@ -21,9 +21,7 @@ public class DeleteRestaurantStorageImpl implements DeleteRestaurantStorage{
         query.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot document : task.getResult()) {
-                    Log.d("!!!!!!!!!!!!!!!!!!!!", "dfjdijfidjf");
                     document.getReference().delete().addOnSuccessListener(aVoid -> {
-                        // Документ успешно удален
                     }).addOnFailureListener(e -> {
 
                     });
@@ -36,7 +34,6 @@ public class DeleteRestaurantStorageImpl implements DeleteRestaurantStorage{
                 query2.get().addOnCompleteListener(task2 -> {
                     if (task2.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task2.getResult()) {
-                            Log.d("!!!!!!!!!!!!!!!!!!!!", "dfjdijfidjf");
                             document.getReference().delete().addOnSuccessListener(aVoid -> {
                                 // Документ успешно удален
                             }).addOnFailureListener(e -> {
@@ -51,7 +48,6 @@ public class DeleteRestaurantStorageImpl implements DeleteRestaurantStorage{
                         query3.get().addOnCompleteListener(task3 -> {
                             if (task3.isSuccessful()) {
                                 for (QueryDocumentSnapshot document : task3.getResult()) {
-                                    Log.d("!!!!!!!!!!!!!!!!!!!!", "dfjdijfidjf");
                                     document.getReference().delete().addOnSuccessListener(aVoid -> {
                                         // Документ успешно удален
                                     }).addOnFailureListener(e -> {

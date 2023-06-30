@@ -35,7 +35,6 @@ public class RejectRestaurantStorageImpl implements RejectRestaurantStorage{
                         String documentId = document.getId();
                         DocumentReference documentRef = collectionRef.document(documentId);
 
-                        // Обновление значения поля "q"
                         documentRef.update("status", "f")
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override

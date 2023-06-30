@@ -28,7 +28,6 @@ public class DeletePointStorageImpl implements DeletePointStorage {
             if (task2.isSuccessful()) {
                 for (QueryDocumentSnapshot document : task2.getResult()) {
                     document.getReference().delete().addOnSuccessListener(aVoid -> {
-                        // Документ успешно удален
                     }).addOnFailureListener(e -> {
 
                     });
