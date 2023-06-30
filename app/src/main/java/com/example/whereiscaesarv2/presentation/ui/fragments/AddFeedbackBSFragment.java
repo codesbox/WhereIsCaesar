@@ -77,11 +77,16 @@ public class AddFeedbackBSFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                Integer estimationNumber = Integer.valueOf(binding.estimation.getText().toString());
                 boolean estimationCheck = false;
-                if (estimationNumber < 11 && estimationNumber > 0){
-                    estimationCheck = true;
+                String estimationNum = binding.estimation.getText().toString();
+                if (estimationNum.isEmpty()){
+
+                }
+                else{
+                    Integer estimationNumber = Integer.valueOf(binding.estimation.getText().toString());
+                    if (estimationNumber < 11 && estimationNumber > 0){
+                        estimationCheck = true;
+                    }
                 }
 
                 boolean allFieldsFilled = !binding.feedback.getText().toString().isEmpty() &&
