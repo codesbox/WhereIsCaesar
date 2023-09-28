@@ -50,13 +50,17 @@ public class RestaurantsStorageImpl implements RestaurantsStorage{
 
 
 
-        Query query = restaurantsRef.whereLessThan("latitude", topLeftPoint.latitude)
-                .whereGreaterThan("latitude", bottomRightPoint.latitude);
+//        Query query = restaurantsRef.whereLessThan("latitude", topLeftPoint.latitude)
+//                .whereGreaterThan("latitude", bottomRightPoint.latitude);
+
+        Query query = restaurantsRef;
         Task<QuerySnapshot> task1 = query.get();
         tasks.add(task1);
 
-        Query query1 = restaurantsRef.whereLessThan("longitude", bottomRightPoint.longitude)
-                .whereGreaterThan("longitude", topLeftPoint.longitude);
+//        Query query1 = restaurantsRef.whereLessThan("longitude", bottomRightPoint.longitude)
+//                .whereGreaterThan("longitude", topLeftPoint.longitude);
+
+        Query query1 = restaurantsRef;
         Task<QuerySnapshot> task2 = query1.get();
         tasks.add(task2);
 
