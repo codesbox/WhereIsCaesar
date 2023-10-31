@@ -14,6 +14,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,11 +47,14 @@ public class DishBSFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.d("QQQ", "onCreateView");
         return inflater.inflate(R.layout.fragment_dish_b_s, container, false);
+
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        Log.d("QQQ", "onviewCreated");
         super.onViewCreated(view, savedInstanceState);
         FragmentDishBSBinding binding = FragmentDishBSBinding.bind(view);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
