@@ -25,6 +25,7 @@ import com.example.whereiscaesarv2.databinding.FragmentUserProfileBSBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -65,7 +66,7 @@ public class UserProfileBSFragment extends Fragment {
 
         binding.getRestaurator.setOnClickListener(v -> {
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireActivity());
             builder.setTitle("Подтверждение")
                     .setMessage("Вы точно хотите стать ресторатором? Процесс необратим")
                     .setPositiveButton("Стать ресторатором", new DialogInterface.OnClickListener() {
