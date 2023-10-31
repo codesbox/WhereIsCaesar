@@ -132,15 +132,17 @@ public class SearchBSFragment extends Fragment {
                 bottomSheetBehavior.setHideable(true);
                 bottomSheetBehavior.setDraggable(true);
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+                NavHostFragment.findNavController(SearchBSFragment.this).navigate(R.id.action_searchBSFragment_to_restaurantsListFragment);
 
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        NavHostFragment.findNavController(SearchBSFragment.this).navigate(R.id.action_searchBSFragment_to_restaurantsListFragment);
 
-                    }
-                }, 100);
+//                Handler handler = new Handler();
+//                handler.postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        NavHostFragment.findNavController(SearchBSFragment.this).navigate(R.id.action_searchBSFragment_to_restaurantsListFragment);
+//
+//                    }
+//                }, 100);
             }
 
 

@@ -62,7 +62,7 @@ public class DishBSFragment extends Fragment {
         bottomSheetBehavior.setHideable(true);
         bottomSheetBehavior.setDraggable(true);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-        bottomSheetBehavior.setHideable(false);
+        //bottomSheetBehavior.setHideable(false);
         isAuto = false;
 
         binding.cancelButton.setOnClickListener(v -> {

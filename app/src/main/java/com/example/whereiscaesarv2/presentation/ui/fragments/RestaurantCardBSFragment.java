@@ -51,7 +51,9 @@ public class RestaurantCardBSFragment extends Fragment {
         FragmentRestaurantCardBSBinding binding = FragmentRestaurantCardBSBinding.bind(view);
 
 
-        bottomSheetBehavior.setHideable(false);
+
+
+        bottomSheetBehavior.setHideable(true);
         bottomSheetBehavior.setDraggable(true);
         bottomSheetBehavior.setPeekHeight(400);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
@@ -148,15 +150,15 @@ public class RestaurantCardBSFragment extends Fragment {
                     bundle.putString("restaurantName", vm.getRestaurant().getValue().restaurantName);
                     bundle.putString("restaurantId", vm.getRestaurant().getValue().restaurantId);
                     bundle.putSerializable("dishCard", mapDishCard);
-
-                    Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            NavHostFragment.findNavController(RestaurantCardBSFragment.this).navigate(R.id.action_restaurantCardBSFragment_to_dishBSFragment, bundle);
-
-                        }
-                    }, 100);
+                    NavHostFragment.findNavController(RestaurantCardBSFragment.this).navigate(R.id.action_restaurantCardBSFragment_to_dishBSFragment, bundle);
+//                    Handler handler = new Handler();
+//                    handler.postDelayed(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            NavHostFragment.findNavController(RestaurantCardBSFragment.this).navigate(R.id.action_restaurantCardBSFragment_to_dishBSFragment, bundle);
+//
+//                        }
+//                    }, 100);
 
 
                 }

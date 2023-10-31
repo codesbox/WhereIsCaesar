@@ -52,7 +52,7 @@ public class RestaurantsListFragment extends Fragment {
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         bottomSheetBehavior.setPeekHeight(400);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-        bottomSheetBehavior.setHideable(false);
+        //bottomSheetBehavior.setHideable(false);
         isAuto = false;
 
         binding.cancelButton.setOnClickListener(v -> {
@@ -71,13 +71,15 @@ public class RestaurantsListFragment extends Fragment {
                 bundle.putSerializable("restaurantCard", restaurantModelDomain);
                 MainMapFragmentViewModel viewModel = new ViewModelProvider(requireActivity(), new MainMapFragmentViewModelFactory()).get(MainMapFragmentViewModel.class);
                 bundle.putStringArrayList("selectedDishes", (ArrayList<String>) viewModel.getSelectedDishes().getValue());
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        NavHostFragment.findNavController(RestaurantsListFragment.this).navigate(R.id.action_restaurantsListFragment_to_restaurantCardBSFragment, bundle);
-                    }
-                }, 100);
+                NavHostFragment.findNavController(RestaurantsListFragment.this).navigate(R.id.action_restaurantsListFragment_to_restaurantCardBSFragment, bundle);
+
+//                Handler handler = new Handler();
+//                handler.postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        NavHostFragment.findNavController(RestaurantsListFragment.this).navigate(R.id.action_restaurantsListFragment_to_restaurantCardBSFragment, bundle);
+//                    }
+//                }, 100);
 
             }
 
